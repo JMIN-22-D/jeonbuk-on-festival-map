@@ -8,7 +8,6 @@
 | 파일 | 내용 |
 |---|---|
 | `index.html` | **웹 지도**: 축제 사진, 시군 지도 + 축제장 번호, 축제별 주변 가맹점(거리순), 9~12월 달별 지도 보기와 캘린더, 가맹점 503곳 검색, 도민증 발급 안내 |
-| `app.html` | **앱 버전 미리보기**: 같은 자료로 만든 휴대폰 앱 형식 화면 (홈·지도·일정·할인·도민증 탭, 축제 상세 화면). PC에서는 휴대폰 틀 안에 보여요 |
 | `leaflet.html` | **A4 가로 양면 리플렛** (달별): 앞면은 지도·축제 목록(사진)·발급 QR, 뒷면은 남은 축제 전부를 사진 카드로 + 축제마다 주변 할인가맹점 |
 | `out/` | 리플렛 PDF·PNG: `리플렛_10월_*`, `리플렛_11~12월_*` (`node tools/export.js`로 다시 만들 수 있어요) |
 | `data/festivals.js` | 축제 일정·장소·프로그램, 설정(QR 주소, '인근' 기준 거리) |
@@ -23,9 +22,7 @@
 ## 공유 링크
 
 - https://claude.ai/artifact/Evcbu3kYzwnqUk5TA2bfFQ (처음엔 비공개예요. 인스타그램 링크트리 등에 올리려면 페이지의 공유 메뉴에서 **링크가 있는 누구나 볼 수 있게** 바꿔 주세요)
-- 앱 버전 미리보기(app.html): https://claude.ai/artifact/D4jcnVAF31coiuYtrdom4H (마찬가지로 처음엔 비공개)
-  - 주소 끝에 `#map`(지도) `#cal`(일정) `#shop`(할인) `#card`(도민증)을 붙이면 그 탭으로 바로 열려요.
-  - `showcase.html`: 웹사이트와 앱을 나란히 띄워 보는 화면 (로컬 서버 `node tools/serve.js`로 열기). 캡처는 `out/웹_앱_한눈에.png`.
+- 앱 버전은 별도 저장소 [jeonbuk-on-festival-app](https://github.com/JMIN-22-D/jeonbuk-on-festival-app)에 있어요. 공유 링크: https://claude.ai/artifact/D4jcnVAF31coiuYtrdom4H
 - 공유 링크에서는 주소 끝에 `#fest=imsil` 같은 바로가기가 동작하지 않아요. 이 기능은 직접 배포한 주소에서만 써요.
 
 ## 보는 방법
