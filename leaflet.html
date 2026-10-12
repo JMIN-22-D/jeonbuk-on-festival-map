@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전북 축제 리플렛</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+/* A4 가로 양면 리플렛 — 브라우저에서 Ctrl+P → 'PDF로 저장' 또는 node tools/export.js */
+@page { size: A4 landscape; margin: 0; }
+:root {
+  --ink: #1D1D1D; --ink2: #4A4A4A; --ink3: #8B8B8B; --line: #E4E0DA; --line2: #F2EFEA;
+  --accent: #E5432D; --accent-ink: #C2321F; --accent-soft: #FDECE8; --pink: #F7C7BD; --pink2: #FCE6E1; --fest: #FBDDD6;
+  --sea: #EDF2F4; --ended: #B9B6B1;
+}
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body { margin: 0; background: #D9D6D1; }
+body { font-family: Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; color: var(--ink); letter-spacing: -0.01em; word-break: keep-all; }
+.page { width: 297mm; height: 210mm; margin: 10mm auto; background: #fff; position: relative; overflow: hidden; padding: 11mm 13mm 9mm; display: flex; flex-direction: column; }
+@media print { html, body { background: #fff; } .page { margin: 0; break-after: page; } .page:last-child { break-after: auto; } }
+.top { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 3mm; border-bottom: 0.35mm solid #9a9a9a; font-size: 9.5pt; }
+.top .eb { color: var(--accent); font-weight: 600; }
+.top .tm { color: var(--ink3); }
+.foot { margin-top: auto; padding-top: 2.5mm; display: flex; justify-content: space-between; gap: 6mm; font-size: 6.6pt; color: var(--ink3); line-height: 1.45; }
+
+/* 사진 공통 */
+.ph { position: relative; overflow: hidden; background: var(--line2); margin: 0; }
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph .ref { position: absolute; right: 1.2mm; top: 1.2mm; font-size: 5.6pt; font-weight: 700; background: rgba(0,0,0,.55); color: #fff; padding: .2mm 1.4mm; border-radius: 3mm; }
+.ph.none { background: radial-gradient(circle at 25% 30%, var(--pink) 0 18%, transparent 19%), radial-gradient(circle at 75% 70%, var(--accent-soft) 0 26%, transparent 27%), linear-gradient(135deg, var(--pink2), var(--accent-soft)); display: grid; place-items: center; }
+.ph.none svg { width: 30%; max-width: 14mm; color: var(--accent); }
+
+/* 앞면 */
+.front { display: grid; grid-template-columns: 1fr 151mm; gap: 7mm; flex: 1; min-height: 0; padding-top: 5mm; }
+.left { display: flex; flex-direction: column; min-height: 0; }
+h1 { font-size: 25pt; line-height: 1.18; letter-spacing: -0.045em; margin: 0 0 2.5mm; font-weight: 800; }
+h1 em { font-style: normal; color: var(--accent); }
+.lead { font-size: 9pt; line-height: 1.55; color: var(--ink2); margin: 0 0 3.5mm; }
+.ftwrap { flex: 1; min-height: 0; max-height: 122mm; }
+.ftable { width: 100%; height: 100%; border-collapse: collapse; font-size: 8.2pt; table-layout: fixed; }
+.ftable td { padding: .9mm 1mm; border-top: 0.2mm solid var(--line); vertical-align: middle; }
+.ftable .th { width: 12.5mm; }
+.ftable .th > div { position: relative; width: 10.5mm; height: 8mm; }
+.ftable .th .ph { position: absolute; inset: 0; border-radius: 1.4mm; }
+.ftable .th .ref { display: none; }
+.ftable .th i { position: absolute; left: -1.6mm; top: -1.4mm; z-index: 1; display: grid; place-items: center; width: 4.6mm; height: 4.6mm; border-radius: 50%; background: var(--accent); color: #fff; font-style: normal; font-weight: 800; font-size: 6.8pt; border: .4mm solid #fff; }
+.ftable .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ftable .nm b { font-weight: 700; }
+.ftable .nm small { display: block; color: var(--ink3); font-size: 6.8pt; overflow: hidden; text-overflow: ellipsis; }
+/* 축제가 10개를 넘으면 한 줄짜리 촘촘한 표로 */
+.ftable.compact td { padding: .45mm 1mm; }
+.ftable.compact .th > div { width: 8.6mm; height: 5.8mm; }
+.ftable.compact .th i { width: 4mm; height: 4mm; font-size: 6pt; left: -1.4mm; top: -1.2mm; }
+.ftable.compact .nm small { display: inline; margin-left: 1.6mm; }
+/* 축제가 14개 넘으면 한 줄을 더 얇게 */
+.ftable.dense td { padding: .25mm 1mm; }
+.ftable.dense .th > div { height: 4.6mm; }
+.ftable .dt { width: 19mm; white-space: nowrap; text-align: right; font-weight: 700; color: var(--accent-ink); }
+.ftable .dt em, .fc .mt em { font-style: normal; font-size: 6pt; font-weight: 700; color: #8A5A00; }
+.ftable .dt em { display: block; }
+.howto { margin-top: 3.5mm; display: grid; grid-template-columns: 1fr 27mm; gap: 3.5mm; align-items: center; background: var(--line2); border-radius: 3mm; padding: 3.2mm 3.5mm; }
+.howto b.t { display: block; font-size: 9.6pt; margin-bottom: 1.3mm; }
+.howto ol { margin: 0; padding-left: 4mm; font-size: 7.7pt; line-height: 1.5; color: var(--ink2); }
+.howto ol b { color: var(--ink); }
+.howto .qr { text-align: center; font-size: 6.4pt; color: var(--ink3); line-height: 1.3; }
+.howto .qr svg { width: 25mm; height: 25mm; display: block; margin-bottom: .8mm; }
+.right { display: flex; flex-direction: column; gap: 4mm; min-height: 0; }
+.mapbox { background: var(--sea); border-radius: 4mm; position: relative; overflow: hidden; flex: 1; }
+.mapbox svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.maptag, .legend { z-index: 1; }
+.legend { position: absolute; left: 4mm; bottom: 3mm; display: flex; gap: 3.5mm; font-size: 6.8pt; color: var(--ink2); background: rgba(255,255,255,.85); padding: 1.2mm 2.5mm; border-radius: 2mm; }
+.legend i { display: inline-block; width: 2.6mm; height: 2.6mm; border-radius: .6mm; margin-right: 1mm; vertical-align: -0.3mm; border: .15mm solid #c9c6c0; }
+.legend i.dot { border-radius: 50%; border: 0; }
+.maptag { position: absolute; right: 4mm; top: 3mm; font-size: 6.8pt; color: var(--ink3); text-align: right; }
+.nb { fill: #F3F1ED; stroke: #D3D0CA; stroke-width: .5; }
+.sg { fill: #fff; stroke: #C9C6C0; stroke-width: .8; }
+.sg.fest { fill: var(--fest); }
+.outline { fill: none; stroke: #8B8B8B; stroke-width: 1.1; }
+.sgl { font-size: 11px; fill: #4A4A4A; text-anchor: middle; font-weight: 600; }
+.sgc { font-size: 8.5px; fill: #9a9a9a; text-anchor: middle; }
+.fm circle { fill: var(--accent); stroke: #fff; stroke-width: 2; }
+.fm text { fill: #fff; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
+.fl rect { fill: #fff; stroke: #E4E0DA; stroke-width: .8; }
+.fl text { font-size: 10px; font-weight: 700; dominant-baseline: central; fill: #1D1D1D; }
+.fl tspan.d { fill: #8B8B8B; font-weight: 500; }
+.bene3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+.bene3 div { border: .25mm solid var(--line); border-radius: 3mm; padding: 2.6mm 3mm; font-size: 7.2pt; color: var(--ink2); line-height: 1.45; }
+.bene3 b { display: block; font-size: 9.6pt; color: var(--accent-ink); margin-bottom: .6mm; letter-spacing: -0.02em; }
+
+/* 뒷면: 축제 사진 카드 */
+.back h2 { font-size: 16pt; letter-spacing: -0.04em; margin: 3.5mm 0 .6mm; }
+.back .sub { font-size: 8.2pt; color: var(--ink2); margin: 0 0 3mm; }
+.cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3.2mm; flex: 1; min-height: 0; }
+.fc { border: .25mm solid var(--line); border-radius: 2.6mm; overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+.fc .ph { height: var(--phh, 23mm); flex: none; }
+.fc .ph .no { position: absolute; left: 1.4mm; top: 1.4mm; width: 5.4mm; height: 5.4mm; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 7.6pt; display: grid; place-items: center; border: .4mm solid #fff; }
+.fc .cr { font-size: 4.9pt; color: var(--ink3); padding: .5mm 2mm 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc .bd { padding: 1.2mm 2.2mm 2mm; display: flex; flex-direction: column; gap: .6mm; min-height: 0; flex: 1; overflow: hidden; }
+.fc .bd > * { flex: none; }
+.fc h3 { margin: 0; font-size: 8.8pt; letter-spacing: -0.03em; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc .mt { font-size: 6.6pt; color: var(--ink2); line-height: 1.35; }
+.fc .mt b { color: var(--accent-ink); }
+.fc .nh { margin-top: .8mm; padding-top: 1.1mm; border-top: .2mm solid var(--line); font-size: 6.4pt; font-weight: 800; display: flex; justify-content: space-between; }
+.fc .nh span { font-weight: 500; color: var(--ink3); }
+.fc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .9mm; }
+.fc li { font-size: 6.4pt; line-height: 1.3; display: grid; grid-template-columns: 1fr auto; gap: 0 1.2mm; }
+.fc li b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 6.8pt; }
+.fc li .d { color: var(--ink3); font-size: 5.8pt; white-space: nowrap; }
+.fc li .bn { grid-column: 1 / -1; color: var(--accent-ink); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc .none-m { font-size: 6.2pt; color: var(--ink3); }
+.strip { display: grid; grid-template-columns: 1fr 1fr auto; gap: 4mm; margin-top: 3.2mm; align-items: stretch; }
+.sbox { background: var(--line2); border-radius: 2.6mm; padding: 2.4mm 3mm; font-size: 7pt; color: var(--ink2); line-height: 1.5; }
+.sbox b.t { display: block; color: var(--ink); font-size: 8.4pt; margin-bottom: .6mm; }
+.sbox ul { margin: 0; padding-left: 3.4mm; }
+.qrs { display: flex; gap: 3mm; align-items: center; text-align: center; font-size: 6pt; color: var(--ink3); background: #fff; border: .25mm solid var(--line); border-radius: 2.6mm; padding: 2mm 3mm; }
+.qrs svg { width: 19mm; height: 19mm; display: block; margin: 0 auto .6mm; }
+
+.toolbar { max-width: 297mm; margin: 10mm auto 0; display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.toolbar button { padding: 9px 16px; border-radius: 999px; border: 0; background: var(--accent); color: #fff; font-weight: 700; cursor: pointer; font-family: inherit; }
+.toolbar span { color: #555; }
+@media print { .toolbar { display: none; } }
+/* tools/export.js 가 한 면씩 PNG로 찍을 때 (?shot=front|back) */
+body.shot { background: #fff; }
+body.shot .toolbar { display: none; }
+body.shot .page { margin: 0; }
+body.shot-front #back, body.shot-back #front { display: none; }
+</style>
+</head>
+<body>
+<div class="toolbar"><button type="button" onclick="print()">인쇄 / PDF로 저장</button><span>A4 가로 · 양면 · 여백 없음 · 배경 그래픽 켜기로 인쇄하세요. 주소 끝에 <code>?date=2026-10-08</code>을 붙이면 그날 기준으로 만들어져요.</span></div>
+
+<section class="page" id="front">
+  <div class="top"><span class="eb" id="eb"></span><span class="tm" id="tm"></span></div>
+  <div class="front">
+    <div class="left">
+      <h1>축제 가는 길,<br><em>전북사랑도민증</em> 챙기세요</h1>
+      <p class="lead">전북 밖에 산다면 누구나 휴대폰으로 발급! 축제장 주변 음식점·카페·숙박·체험 <b id="cnt"></b>에서 도민증 하나로 할인받을 수 있어요.</p>
+      <div class="ftwrap"><table class="ftable" id="ftable"></table></div>
+      <div class="howto">
+        <div>
+          <b class="t">도민증, 이렇게 받고 이렇게 써요</b>
+          <ol>
+            <li>오른쪽 <b>QR 스캔</b> → 전북사랑도민 누리집 ‘도민증 발급신청’</li>
+            <li><b>휴대폰 본인인증</b> · 약관 동의 · 신청서 작성</li>
+            <li>온라인 도민증을 <b>카카오톡</b>이나 누리집 마이페이지에서 받기</li>
+            <li>가맹점에서 결제 <b>전에</b> 도민증 보여주기 (신분증을 요청할 수 있어요)</li>
+          </ol>
+        </div>
+        <div class="qr" id="qrIssue"></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="mapbox">
+        <div class="maptag">숫자 = 축제장 · 시군 아래 숫자 = 도민증 할인가맹점 수</div>
+        <svg id="lmap"></svg>
+        <div class="legend"><span><i style="background:var(--fest)"></i>축제가 열리는 시군</span><span><i class="dot" style="background:var(--accent)"></i>축제장</span></div>
+      </div>
+      <div class="bene3">
+        <div><b id="cnt3">할인가맹점</b>음식점·카페·숙박·체험·관광시설, 14개 시군 어디서나</div>
+        <div><b>투어패스 1일권</b>가입 때 혜택 제공 동의 시 무료 지급 (예산 소진 시까지)</div>
+        <div><b>‘참참’ 5,000원 쿠폰</b>농촌여행 플랫폼 ‘참참’에 함께 가입하면 모바일 쿠폰 (혜택 제공 동의 시)</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span id="src1"></span><span id="team1" style="white-space:nowrap"></span></div>
+</section>
+
+<section class="page back" id="back">
+  <div class="top"><span class="eb">축제장 주변 도민증 할인가맹점</span><span class="tm" id="tm2"></span></div>
+  <h2>축제 보고, 바로 옆에서 할인받고</h2>
+  <p class="sub" id="backSub"></p>
+  <div class="cards" id="cards"></div>
+  <div class="strip">
+    <div class="sbox"><b class="t">알아두세요</b><ul>
+      <li>모바일 도민증 신청 대상: 현재 전북 외 지역에 사는 누구나</li>
+      <li>할인 내용·영업시간은 가게 사정으로 바뀔 수 있어요. 방문 전에 확인해 주세요.</li>
+    </ul></div>
+    <div class="sbox"><b class="t">더 알아보기</b><ul>
+      <li>가맹점 전체 목록: 전북사랑도민 누리집 → 할인가맹점 현황</li>
+      <li id="contact2"></li>
+    </ul></div>
+    <div class="qrs" id="qrs"></div>
+  </div>
+  <div class="foot"><span id="src2"></span><span id="team2" style="white-space:nowrap"></span></div>
+</section>
+
+<script src="data/geo.js"></script>
+<script src="data/festivals.js"></script>
+<script src="data/merchants.js"></script>
+<script src="lib/qrcode.min.js"></script>
+<script src="lib/common.js"></script>
+<script>
+(function () {
+  const J = JBON, U = J.u, C = J.config, esc = U.esc, G = J.geo;
+  const T = U.today();
+  const $ = (s) => document.querySelector(s);
+  const ns = 'http://www.w3.org/2000/svg';
+  const M = J.merchants;
+  const sgCount = M.reduce((o, m) => ((o[m.sigun] = (o[m.sigun] || 0) + 1), o), {});
+  const qs = new URLSearchParams(location.search);
+  // ?month=11 처럼 고르면 그달, ?month=11-12 처럼 고르면 두 달을 한 장에 (기본: 오늘이 속한 달)
+  const [M1, M2 = M1] = (qs.get('month') || String(T.getMonth() + 1)).split('-').map(Number);
+  const months = Array.from({ length: M2 - M1 + 1 }, (_, i) => M1 + i);
+  // 그 달에 걸친 축제 중, 나눠 주는 기간을 생각해 오늘 끝나는 축제까지 뺌
+  const F = U.numbered(J.festivals.map((f) => ({ ...f, st: U.status(f, T) }))
+    .filter((f) => months.some((m) => U.inMonth(f, T.getFullYear(), m)) && U.parseDate(f.end) > T));
+  F.forEach((f, i) => (f.num = i + 1));
+  const dateStr = `${T.getFullYear()}.${T.getMonth() + 1}.${T.getDate()}`;
+  const shot = qs.get('shot');
+  if (shot) document.body.classList.add('shot', `shot-${shot}`);
+
+  $('#eb').textContent = `${M1 === M2 ? M1 : `${M1}~${M2}`}월 전북 축제 & 도민증 할인 지도`;
+  $('#tm').textContent = $('#tm2').textContent = C.team;
+  $('#cnt').textContent = `${M.length}곳`;
+  $('#cnt3').textContent = `할인가맹점 ${M.length}곳`;
+  $('#contact2').textContent = `도민증 문의: ${C.contact}`;
+  $('#qrIssue').innerHTML = U.qrSvg(C.issueUrl, { margin: 1 }) + '도민증 발급';
+  $('#qrs').innerHTML = `<div>${U.qrSvg(C.issueUrl, { margin: 1 })}도민증 발급</div>` + (C.mapUrl ? `<div>${U.qrSvg(C.mapUrl, { margin: 1 })}웹 지도 보기</div>` : '');
+  const foot = `축제 일정은 ${dateStr} 기준 투어전북·한국관광공사 축제 정보·시군 누리집·언론 보도로 교차 확인(‘예정’은 주최 측 등록 일정으로 바뀔 수 있음), 가맹점은 전북사랑도민 누리집 할인가맹점 현황(${C.baseDate.replace(/-/g, '.')} 확인). 지도: 통계청 행정구역 경계 · © OpenStreetMap 기여자. 일정·혜택은 바뀔 수 있어요.`;
+  $('#src1').textContent = foot;
+  $('#src2').textContent = '사진: 위키미디어 공용 (카드마다 작가·라이선스 표기, ‘참고 이미지’는 해당 축제 현장 사진이 아님). ' + foot;
+  $('#team1').textContent = $('#team2').textContent = `${C.team} 제작`;
+
+  // 앞면 축제 표 (사진 썸네일)
+  $('#ftable').classList.toggle('compact', F.length > 10);
+  $('#ftable').classList.toggle('dense', F.length > 14);
+  $('#ftable').innerHTML = F.map((f) => `<tr>
+    <td class="th"><div><i>${f.num}</i>${U.photo(f)}</div></td>
+    <td class="nm"><b>${esc(f.name)}</b><small>${esc(f.sigun)} ${esc(f.venue.split(' (')[0].split(' · ')[0])}</small></td>
+    <td class="dt">${U.range(f, false)}${f.tentative ? '<em>예정 일정</em>' : ''}</td></tr>`).join('');
+
+  // 앞면 지도
+  const svg = $('#lmap');
+  const VB = { x: -8, y: -8, w: G.W + 16, h: G.H + 16 };
+  // 지도 상자 비율에 맞춰 위아래(또는 좌우)를 넓혀 이웃 시도까지 꽉 채움
+  const box = svg.parentElement.getBoundingClientRect(), ar = box.height / box.width;
+  const vh = Math.max(VB.h, VB.w * ar), vw = Math.max(VB.w, VB.h / ar);
+  svg.setAttribute('viewBox', `${VB.x - (vw - VB.w) / 2} ${VB.y - (vh - VB.h) / 2} ${vw} ${vh}`);
+  const el = (t, a, p) => { const n = document.createElementNS(ns, t); for (const k in a) n.setAttribute(k, a[k]); p.appendChild(n); return n; };
+  for (const d of Object.values(G.neighbors)) el('path', { d, class: 'nb' }, svg);
+  for (const [name, s] of Object.entries(G.sigun)) el('path', { d: s.d, class: `sg${F.some((f) => f.sigun === name) ? ' fest' : ''}` }, svg);
+  el('path', { d: G.outline, class: 'outline' }, svg);
+  const LBL = U.LBL, sgText = [];
+  for (const [name, s] of Object.entries(G.sigun)) {
+    const [dx, dy] = LBL[name] || [0, 0];
+    const t = el('text', { x: s.c[0] + dx, y: s.c[1] + dy, class: 'sgl' }, svg); t.textContent = name;
+    const c = el('text', { x: s.c[0] + dx, y: s.c[1] + dy + 11, class: 'sgc' }, svg); c.textContent = `가맹점 ${sgCount[name] || 0}`;
+    sgText.push(t, c);
+  }
+  const pts = F.map((f) => { const [x, y] = U.project(f.lat, f.lng); return { f, x, y }; });
+  for (let i = 0; i < pts.length; i++) for (let j = 0; j < i; j++) {
+    const a = pts[i], b = pts[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy);
+    if (d < 22) { const ang = d ? Math.atan2(dy, dx) : -Math.PI / 4; a.x = b.x + Math.cos(ang) * 22; a.y = b.y + Math.sin(ang) * 22; }
+  }
+  for (const p of pts) {
+    const g = el('g', { class: 'fm', transform: `translate(${p.x} ${p.y})` }, svg);
+    el('circle', { r: 10.5 }, g);
+    el('text', { 'font-size': 11.5 }, g).textContent = p.f.num;
+  }
+  // 이름표: 날짜순으로, 실제 글자 폭을 재서 번호·시군 이름과 겹치지 않는 자리에 (없으면 시군 이름은 가려도 됨)
+  const nMark = pts.length;
+  const sgB = sgText.map((t) => { const b = t.getBBox(); return { x: b.x - 2, y: b.y - 1, w: b.width + 4, h: b.height + 2 }; });
+  const boxes = pts.map((p) => ({ x: p.x - 12, y: p.y - 12, w: 24, h: 24 })).concat(sgB);
+  const hit = (b, strict = true) => boxes.some((o, i) => (strict || i < nMark || i >= nMark + sgB.length) && b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y) || b.x < VB.x || b.y < VB.y || b.x + b.w > VB.x + VB.w || b.y + b.h > VB.y + VB.h;
+  const gL = el('g', {}, svg);
+  for (const p of pts) {
+    const f = p.f, r = 10.5, h = 18;
+    const lg = el('g', { class: 'fl' }, gL);
+    const rect = el('rect', { rx: 9, height: h }, lg);
+    const tx = el('text', { x: 8, y: h / 2 }, lg);
+    tx.innerHTML = `${esc(f.short)} <tspan class="d">${esc(U.range(f, false))}</tspan>`;
+    const w = tx.getComputedTextLength() + 16;
+    const cands = [[r + 3, -h / 2], [-r - 3 - w, -h / 2], [-w / 2, -r - 3 - h], [-w / 2, r + 3], [r, -h - 2], [r, 2], [-r - w, -h - 2], [-r - w, 2]].map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy, w, h }));
+    const b = cands.find((c) => !hit(c)) || cands.find((c) => !hit(c, false));
+    if (!b) { lg.remove(); continue; }
+    boxes.push(b);
+    lg.setAttribute('transform', `translate(${b.x.toFixed(1)} ${b.y.toFixed(1)})`);
+    rect.setAttribute('width', w.toFixed(1));
+  }
+
+  // 뒷면: 남은 축제 전부를 사진 카드로 (5칸씩). 카드가 3줄이 되면 사진·목록을 줄임
+  // 축제 수에 맞춰 칸 수를 정해 빈칸이 덜 생기게 (6개면 3×2, 8개면 4×2)
+  const cols = F.length <= 4 ? Math.max(F.length, 2) : F.length <= 6 ? 3 : F.length <= 8 ? 4 : 5;
+  const rows = Math.ceil(F.length / cols);
+  $('#cards').style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+  const per = rows >= 3 ? 1 : rows === 2 ? 3 : 6;
+  document.documentElement.style.setProperty('--phh', rows >= 3 ? '12.5mm' : rows === 2 ? '20mm' : '30mm');
+  $('#cards').style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
+  $('#backSub').textContent = `축제장 안과 주변(직선 약 ${C.nearKm}km, 익산은 15km)의 할인가맹점을 가까운 순서로 ${per}곳씩 골랐어요. 같은 건물·같은 혜택 매장은 한 줄로 묶었어요.`;
+  const strip = (n) => n.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+  // 혜택 첫 줄이 '입장료'처럼 짧으면 다음 줄까지 붙여서 보여줌
+  const benefitLine = (m) => ((m.benefit[0] || '').length < 8 && m.benefit[1] ? `${m.benefit[0]} ${m.benefit[1].replace(/^[-·]\s*/, '')}` : m.benefit[0] || '');
+  $('#cards').innerHTML = F.map((f) => {
+    const near = U.nearby(f).filter((x) => !x.m.closed);
+    // 같은 건물·같은 혜택 가게는 한 줄로, 이름이 같은 중복 등록은 한 번만
+    const groups = [], byKey = new Map(), names = new Set();
+    for (const x of near) {
+      const nm = strip(x.m.name).replace(/\s/g, '');
+      if (names.has(nm)) continue; names.add(nm);
+      const k = (x.m.addr || '').replace(/\s*(\d+층|지하|\().*$/, '').replace(/\s+/g, '') + '§' + x.m.benefit.join('|');
+      if (byKey.has(k)) { byKey.get(k).n++; continue; }
+      const g = { ...x, n: 1 }; byKey.set(k, g); groups.push(g);
+    }
+    const title = (g) => {
+      if (g.n < 3) return strip(g.m.name);
+      const par = (g.m.name.match(/\(([^)]+)\)\s*$/) || [])[1];
+      return par ? `${par} 매장 ${g.n}곳` : `${strip(g.m.name)} 외 ${g.n - 1}곳`;
+    };
+    const p = f.photo;
+    return `<article class="fc">
+      ${U.photo(f, { cap: `<span class="no">${f.num}</span>` })}
+      <div class="cr">${p ? esc(U.credit(p, false)) : '그림: 자유 이용 현장 사진 없음'}</div>
+      <div class="bd">
+        <h3>${esc(f.name)}</h3>
+        <div class="mt"><b>${U.range(f)}</b>${f.tentative ? ' <em>예정 일정</em>' : ''}<br>${esc(f.sigun)} ${esc(f.venue.split(' (')[0])}</div>
+        <div class="nh">주변 할인가맹점<span>${near.length}곳</span></div>
+        ${groups.length ? `<ul>${groups.slice(0, per).map((g) => `<li><b>${esc(title(g))}</b><span class="d">${esc(g.short)}</span><span class="bn">${esc(benefitLine(g.m))}</span></li>`).join('')}</ul>` : `<div class="none-m">${esc(f.sigun)} 가맹점 ${sgCount[f.sigun] || 0}곳은 웹 지도에서</div>`}
+      </div>
+    </article>`;
+  }).join('');
+})();
+</script>
+</body>
+</html>

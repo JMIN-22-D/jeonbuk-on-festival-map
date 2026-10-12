@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전북 축제 도민증 지도</title>
+<meta name="description" content="9~12월 전북 축제장과 주변 전북사랑도민증 할인가맹점을 한눈에 — 전북사랑서포터즈 1기 전북 ON">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* 깔끔한 기본형: 흰 바탕 · 회색 선 · 포인트 색(청록) 하나 · 둥근 모서리
+   레이아웃: 첫 화면(글 + 사진) → 지도·패널 → 캘린더 → 가맹점 → 도민증 안내 → 계정 */
+:root {
+  --bg: #FFFFFF;
+  --soft: #F5F7F8;
+  --card: #FFFFFF;
+  --ink: #191F28;
+  --ink2: #4E5968;
+  --ink3: #8B95A1;
+  --line: #E5E8EB;
+  --accent: #0E9F7E;
+  --accent-ink: #0A7F65;
+  --accent-soft: #E3F5EF;
+  --live: #F04452;
+  --sea: #EEF3F6;
+  --land: #FFFFFF;
+  --land-out: #F3F5F6;
+  --land-stroke: #C3CAD1;
+  --fest: #D3EFE6;
+  --ended: #B8C0C8;
+  --shadow: 0 1px 2px rgba(25, 31, 40, .04), 0 6px 18px rgba(25, 31, 40, .05);
+  --f-body: "Pretendard Variable", Pretendard, "Noto Sans KR", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.6; letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: anywhere; }
+a { color: inherit; }
+button, input, select { font: inherit; color: inherit; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-inline: 16px; }
+.muted { color: var(--ink3); }
+.accent { color: var(--accent); }
+.eyebrow { display: inline-block; color: var(--accent); font-weight: 700; font-size: 13.5px; letter-spacing: 0; }
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── 첫 화면 ── */
+.hero { padding-block: 22px 8px; }
+.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.handle { font-size: 14px; color: var(--ink3); text-decoration: none; font-weight: 500; }
+.handle:hover { color: var(--ink); }
+.hero-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: 48px; align-items: center; padding-top: 36px; }
+.hero-text { min-width: 0; }
+.hero .meta { font-size: 13px; color: var(--ink3); margin: 0 0 12px; }
+.hero h1 { font-size: clamp(30px, 4.8vw, 48px); line-height: 1.22; margin: 0 0 16px; letter-spacing: -0.04em; font-weight: 800; text-wrap: balance; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero .lead { font-size: clamp(15px, 1.7vw, 17px); color: var(--ink2); margin: 0 0 26px; max-width: 32em; }
+.stats { display: flex; margin: 0 0 26px; }
+.stat { display: flex; flex-direction: column-reverse; padding: 0 22px; border-left: 1px solid var(--line); min-width: 0; }
+.stat:first-child { padding-left: 0; border-left: 0; }
+.stat .tab { font-size: 12.5px; color: var(--ink3); }
+.stat b { font-size: 28px; letter-spacing: -0.03em; line-height: 1.15; font-weight: 800; font-variant-numeric: tabular-nums; }
+.stat b small { font-size: 15px; font-weight: 700; margin-left: 2px; }
+.cta { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 20px; border-radius: 12px; font-weight: 700; text-decoration: none; border: 1px solid transparent; cursor: pointer; font-size: 15px; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-ink); }
+.btn-ghost { background: var(--card); border-color: var(--line); color: var(--ink); }
+.btn-ghost:hover { background: var(--soft); }
+.qr-inline { margin-top: 22px; display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; background: var(--soft); border-radius: 14px; width: fit-content; max-width: 100%; }
+.qr-inline .qr { width: 62px; height: 62px; flex: none; border-radius: 6px; overflow: hidden; background: #fff; }
+.qr-inline .qr svg { width: 100%; height: 100%; display: block; }
+.qr-inline b { display: block; font-size: 13.5px; }
+.qr-inline span { font-size: 12.5px; color: var(--ink3); }
+.hero-art { min-width: 0; }
+.mosaic { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: 180px 180px; gap: 8px; }
+.mosaic .ph { cursor: pointer; border-radius: 16px; }
+.mosaic .ph:first-child { grid-row: span 2; }
+.mosaic .ph img { transition: transform .5s ease; }
+.mosaic .ph:hover img { transform: scale(1.03); }
+.mosaic .ph .cap { padding: 26px 12px 10px; }
+.mosaic .ph .cap b { display: block; font-size: 14px; }
+.mosaic .ph .cap span { font-weight: 500; opacity: .9; }
+@media (prefers-reduced-motion: reduce) { .mosaic .ph img { transition: none; } .mosaic .ph:hover img { transform: none; } }
+
+/* 바로가기 메뉴 */
+.secnav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); background: rgba(255, 255, 255, .92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); margin-top: 32px; }
+.secnav-in { display: flex; gap: 2px; padding-block: 8px; overflow-x: auto; scrollbar-width: none; align-items: center; }
+.secnav-in::-webkit-scrollbar { display: none; }
+.secnav a { flex: none; text-decoration: none; font-size: 14px; font-weight: 600; color: var(--ink2); padding: 7px 12px; border-radius: 10px; }
+.secnav a:hover { background: var(--soft); color: var(--ink); }
+.secnav a.go { margin-left: auto; background: var(--accent); color: #fff; }
+.secnav a.go:hover { background: var(--accent-ink); }
+
+/* 섹션 */
+.sec { padding-block: 56px 0; scroll-margin-top: 60px; }
+.sec-head { margin-bottom: 18px; }
+.sec-head > div { max-width: 46em; }
+.sec-head h2 { font-size: clamp(22px, 3vw, 28px); line-height: 1.3; margin: 0 0 6px; letter-spacing: -0.035em; font-weight: 800; text-wrap: balance; }
+.sec-head p { margin: 0; color: var(--ink2); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+
+/* ── 지도 ── */
+.map-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr); gap: 20px; align-items: start; }
+.map-card { padding: 14px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 64px); }
+.toolbar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.seg { display: inline-flex; background: var(--soft); border-radius: 12px; padding: 3px; }
+.seg button { border: 0; background: transparent; padding: 7px 14px; border-radius: 9px; cursor: pointer; font-size: 13.5px; font-weight: 600; color: var(--ink2); }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(25, 31, 40, .12); }
+.toggle { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--ink2); cursor: pointer; user-select: none; }
+.toggle input { accent-color: var(--accent); width: 16px; height: 16px; }
+.map-box { position: relative; background: var(--sea); border-radius: 14px; overflow: hidden; }
+#map { display: block; width: 100%; height: auto; touch-action: manipulation; }
+#map .nb { fill: var(--land-out); stroke: #D6DBE0; stroke-width: .5; }
+#map .sg { fill: var(--land); stroke: var(--land-stroke); stroke-width: .8; cursor: pointer; transition: fill .15s; }
+#map .sg.fest { fill: var(--fest); }
+#map .sg:hover { fill: #EAF7F2; }
+#map .sg.sel { stroke: var(--accent); stroke-width: 2; }
+#map .outline { fill: none; stroke: #8B95A1; stroke-width: 1.1; pointer-events: none; }
+#map .sgl { font-size: 11.5px; fill: var(--ink2); text-anchor: middle; pointer-events: none; font-weight: 600; }
+#map .sgc { font-size: 9.5px; fill: var(--ink3); text-anchor: middle; pointer-events: none; }
+#map .md { fill: var(--ink2); opacity: .35; pointer-events: none; }
+#map .fm { cursor: pointer; }
+#map .fm circle.dot { fill: var(--accent); stroke: #fff; stroke-width: 2; }
+#map .fm.ended circle.dot { fill: var(--ended); }
+#map .fm text.n { fill: #fff; font-weight: 800; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+#map .fm.sel circle.dot { fill: var(--ink); }
+#map .fm .halo { fill: var(--accent); opacity: .4; transform-box: fill-box; transform-origin: center; animation: pulse 1.8s ease-out infinite; pointer-events: none; }
+@keyframes pulse { from { transform: scale(1); opacity: .45; } to { transform: scale(2.4); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #map .fm .halo { animation: none; opacity: .25; } }
+#map .fl rect { fill: var(--card); stroke: var(--line); stroke-width: .8; }
+#map .fl.sel rect { stroke: var(--accent); }
+#map .fl text { font-size: 10.5px; fill: var(--ink); dominant-baseline: central; font-weight: 700; }
+#map .fl text tspan.d { fill: var(--ink3); font-weight: 500; }
+#map .fl.ended text { fill: var(--ink3); }
+#map .venue-ring { fill: none; stroke: var(--accent); stroke-dasharray: 3 3; stroke-width: 1.2; pointer-events: none; }
+.map-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink2); margin-top: 10px; }
+.map-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
+.map-legend .dot { border-radius: 50%; }
+.flist { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin-top: 14px; }
+.fchip { display: flex; align-items: center; gap: 10px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px 7px 8px; cursor: pointer; font-size: 13.5px; }
+.fchip:hover { background: var(--soft); }
+.fchip.sel { border-color: var(--accent); background: var(--accent-soft); }
+.fchip .thumb { flex: none; position: relative; width: 44px; height: 44px; }
+.fchip .thumb .ph { position: absolute; inset: 0; border-radius: 9px; }
+.fchip .num { position: absolute; left: -5px; top: -5px; width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 800; font-size: 11px; display: grid; place-items: center; border: 2px solid var(--card); z-index: 1; }
+.fchip.ended .num { background: var(--ended); }
+.fchip.ended .thumb img { filter: grayscale(1); opacity: .7; }
+.fchip .ref, .cal-row .ref { display: none; }
+.fchip .t { flex: 1; min-width: 0; }
+.fchip .t b { display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fchip .t span { font-size: 12px; color: var(--ink3); }
+
+/* ── 패널 ── */
+.panel { padding: 22px; min-height: 420px; }
+.panel h3 { font-size: 23px; line-height: 1.3; margin: 6px 0 4px; letter-spacing: -0.035em; font-weight: 800; }
+.panel .sub { color: var(--ink2); margin: 0 0 14px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.badge { display: inline-flex; align-items: center; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--soft); color: var(--ink2); }
+.badge.live { background: var(--live); color: #fff; }
+.badge.soon { background: var(--accent-soft); color: var(--accent-ink); }
+.badge.ended { background: var(--soft); color: var(--ink3); }
+.badge.tent { background: #FFF4D6; color: #8A5A00; }
+.facts { display: grid; grid-template-columns: 64px 1fr; gap: 6px 10px; margin: 14px 0; font-size: 14px; }
+.facts dt { color: var(--ink3); font-weight: 600; }
+.facts dd { margin: 0; }
+.prog { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 5px; }
+.prog li { padding-left: 14px; position: relative; font-size: 14px; }
+.prog li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.src { font-size: 12px; color: var(--ink3); }
+.near-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 22px 0 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+.near-head h4 { margin: 0; font-size: 16px; font-weight: 700; }
+.near-head span { font-size: 12.5px; color: var(--ink3); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 10px; }
+.chip { border: 1px solid var(--line); background: var(--card); padding: 5px 11px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--ink2); }
+.chip[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.chip small { font-weight: 500; opacity: .7; margin-left: 2px; }
+.mlist { display: grid; gap: 8px; }
+.empty { padding: 18px; text-align: center; color: var(--ink3); background: var(--soft); border-radius: 12px; font-size: 14px; }
+.more { width: 100%; margin-top: 10px; padding: 11px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); cursor: pointer; font-weight: 600; color: var(--ink2); }
+.more:hover { background: var(--soft); }
+.fest-cards { display: grid; gap: 10px; margin-top: 14px; }
+.fest-card { text-align: left; border: 1px solid var(--line); border-radius: 14px; padding: 0; background: var(--card); cursor: pointer; display: grid; grid-template-columns: 112px 1fr; overflow: hidden; }
+.fest-card:hover { border-color: var(--accent); }
+.fest-card .ph { border-radius: 0; min-height: 106px; }
+.fest-card .body { padding: 12px 14px; display: grid; gap: 3px; align-content: start; }
+.fest-card b { font-size: 16px; font-weight: 700; }
+.fest-card span.s { font-size: 13px; color: var(--ink2); }
+.fest-actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+.btn-kakao { background: #FEE500; color: #191919; padding: 10px 16px; font-size: 14.5px; }
+.btn-kakao:hover { background: #F2D900; }
+.hint { display: flex; gap: 10px; align-items: flex-start; background: var(--soft); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; color: var(--ink2); }
+.back { border: 0; background: none; padding: 0; color: var(--ink3); font-size: 13px; cursor: pointer; }
+.back:hover { color: var(--ink); }
+
+/* ── 사진 ── */
+.ph { position: relative; overflow: hidden; background: var(--soft); border-radius: 12px; margin: 0; }
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph .ref { position: absolute; right: 6px; top: 6px; font-size: 10.5px; font-weight: 700; background: rgba(0, 0, 0, .55); color: #fff; padding: 2px 7px; border-radius: 999px; line-height: 1.5; }
+.ph .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 10px 7px; font-size: 12px; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, .6)); }
+.ph.none { background: var(--accent-soft); display: grid; place-items: center; }
+.ph.none svg { width: 38%; max-width: 90px; color: var(--accent); }
+.ph.ended img { filter: grayscale(.85); }
+.hero-photo { aspect-ratio: 16 / 9; max-width: 100%; margin: 12px 0 6px; border-radius: 14px; }
+.credit { font-size: 11.5px; color: var(--ink3); margin: 0 0 4px; }
+.credit a { color: inherit; }
+
+/* ── 가맹점 카드 ── */
+/* 같은 줄 카드끼리 높이가 달라도 이름·혜택은 위에, 버튼 줄은 맨 아래에 맞춤 */
+.m { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: var(--card); display: flex; flex-direction: column; gap: 4px; }
+.m.closed { opacity: .55; }
+.m-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cat { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 700; color: var(--ink2); background: var(--tag, var(--soft)); padding: 1px 8px; border-radius: 6px; line-height: 1.7; }
+.dist { font-size: 12px; color: var(--accent-ink); white-space: nowrap; font-weight: 600; }
+.m h4 { margin: 2px 0 0; font-size: 15.5px; letter-spacing: -0.02em; font-weight: 700; }
+.m .ben { margin: 0; font-size: 14px; color: var(--ink); font-weight: 600; }
+.m .addr { margin: 0; font-size: 12.5px; color: var(--ink3); }
+.m-act { display: flex; gap: 6px; margin-top: auto; padding-top: 4px; flex-wrap: wrap; }
+.m-act a, .m-act summary { font-size: 12.5px; font-weight: 600; text-decoration: none; background: var(--soft); border-radius: 8px; padding: 4px 10px; cursor: pointer; color: var(--ink2); list-style: none; }
+.m-act a:hover, .m-act summary:hover { background: var(--line); color: var(--ink); }
+.m-act a.kakao { background: #FEE500; color: #191919; }
+.m-act a.kakao:hover { background: #F2D900; color: #191919; }
+.m-act summary::-webkit-details-marker { display: none; }
+.m details { display: contents; }
+.m details[open] .note { display: block; }
+.note { display: none; flex-basis: 100%; font-size: 12.5px; color: var(--ink2); background: var(--soft); border-radius: 10px; padding: 8px 10px; margin-top: 4px; white-space: pre-line; }
+.tag-closed { font-size: 11px; font-weight: 700; color: #fff; background: var(--ink3); border-radius: 6px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; }
+
+/* ── 캘린더 ── */
+.cal { padding: 18px 20px; }
+.cal-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.cal-scale, .cal-row .track { display: grid; grid-template-columns: repeat(var(--n, 31), minmax(0, 1fr)); }
+.cal-scale { font-size: 11px; color: var(--ink3); text-align: center; margin-bottom: 4px; }
+.cal-scale .sat { color: #3182F6; } .cal-scale .sun { color: var(--live); }
+.cal-scale span { white-space: nowrap; }
+.cal-scale span:first-child:not(.today) { text-align: left; }
+.cal-scale .today { color: #fff; background: var(--ink); border-radius: 6px; font-weight: 700; }
+.cal-rows { position: relative; }
+.cal-row { display: grid; grid-template-columns: 230px 1fr; gap: 12px; align-items: center; padding: 7px 0; border-top: 1px solid var(--soft); cursor: pointer; }
+.cal-row:hover .name b { color: var(--accent); }
+.cal-row .name { min-width: 0; font-size: 13.5px; display: flex; gap: 8px; align-items: center; }
+.cal-row .name .ph { width: 34px; height: 34px; flex: none; border-radius: 8px; }
+.cal-row .name > div { min-width: 0; }
+.cal-row .name b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; }
+.cal-row .name span { font-size: 12px; color: var(--ink3); }
+.cal-row .track { position: relative; height: 26px; background: repeating-linear-gradient(90deg, transparent 0 calc(100% / var(--n, 31) - 1px), var(--soft) calc(100% / var(--n, 31) - 1px) calc(100% / var(--n, 31))); border-radius: 6px; }
+.bar { height: 26px; border-radius: 8px; background: var(--accent-soft); color: var(--accent-ink); font-size: 11.5px; font-weight: 700; display: flex; align-items: center; padding: 0 8px; white-space: nowrap; overflow: hidden; }
+.bar.live { background: var(--accent); color: #fff; }
+.bar.ended { background: var(--soft); color: var(--ink3); }
+.bar.cl { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.bar.cr { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.bar, .bar-lbl { grid-row: 1; }
+.bar-lbl { align-self: center; padding: 0 6px; font-size: 11.5px; font-weight: 700; color: var(--accent-ink); white-space: nowrap; }
+.bar-lbl.before { justify-self: end; }
+.bar-lbl.ended { color: var(--ink3); }
+.cal-empty { padding: 16px 0 4px; color: var(--ink3); font-size: 14px; }
+.cal-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink2); margin-top: 12px; }
+.cal-legend i { display: inline-block; width: 14px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: 0; }
+
+/* ── 가맹점 찾기 ── */
+.finder-ctl { display: grid; grid-template-columns: 1fr 190px; gap: 8px; margin-bottom: 12px; }
+.finder-ctl input, .finder-ctl select { width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); font-size: 15px; }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.count { font-size: 13px; color: var(--ink3); margin: 4px 0 10px; }
+
+/* ── 도민증 안내 ── */
+.card-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; }
+.box { padding: 24px; }
+.box h3 { margin: 0 0 14px; font-size: 18px; font-weight: 700; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; }
+.steps li::before { content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-ink); font-weight: 800; display: grid; place-items: center; font-size: 13.5px; }
+.steps b { display: block; font-weight: 700; }
+.steps span { font-size: 13.5px; color: var(--ink2); }
+.bene { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.bene li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+.bene .ic { width: 40px; height: 40px; background: var(--accent-soft); border-radius: 12px; display: grid; place-items: center; color: var(--accent); }
+.bene b { display: block; font-size: 15px; font-weight: 700; }
+.bene span { font-size: 13px; color: var(--ink2); }
+.bene-cats { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.bene-cats button { border: 0; background: var(--tag, var(--soft)); color: var(--ink2); font-size: 12.5px; font-weight: 700; padding: 4px 10px; border-radius: 8px; cursor: pointer; }
+.bene-cats button:hover { color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.bene-cats small { font-weight: 600; opacity: .75; margin-left: 3px; }
+.perk { margin: 0 0 14px; background: var(--accent-soft); border-radius: 14px; padding: 12px 14px; }
+.perk b.t { display: block; font-size: 13.5px; color: var(--accent-ink); margin-bottom: 6px; }
+.perk ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13.5px; }
+.perk li span { color: var(--ink2); }
+.use { margin-top: 18px; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; background: var(--soft); border-radius: 14px; padding: 14px; }
+.use .qr { width: 100px; height: 100px; background: #fff; border-radius: 8px; overflow: hidden; }
+.use .qr svg { width: 100%; height: 100%; display: block; }
+.use b { font-weight: 700; }
+.notes { margin: 14px 0 0; padding-left: 18px; font-size: 12.5px; color: var(--ink3); display: grid; gap: 3px; }
+
+/* ── 계정 + 푸터 ── */
+.follow-wrap { padding-block: 56px 8px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; }
+.follow { display: flex; align-items: center; gap: 14px; flex: 1 1 420px; max-width: 560px; background: var(--soft); border-radius: 18px; padding: 14px 16px 14px 14px; }
+.follow img { width: 56px; height: 56px; border-radius: 50%; flex: none; }
+.follow .who { flex: 1; min-width: 0; }
+.follow .who b { display: block; font-size: 17px; font-weight: 700; }
+.follow .who span { color: var(--ink3); font-size: 14px; }
+.follow .btn { padding: 10px 18px; font-size: 14.5px; }
+.follow-side { min-width: 0; }
+.yt { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; color: var(--ink3); font-size: 14px; }
+.yt a { font-weight: 700; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.yt a:hover { border-color: var(--ink); }
+footer { margin-top: 48px; padding-block: 26px 44px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink3); background: var(--soft); }
+footer ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 3px; }
+footer a { color: var(--ink2); }
+footer summary { cursor: pointer; color: var(--ink2); font-weight: 600; width: fit-content; }
+footer details[open] summary { margin-bottom: 4px; }
+.foot-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--ink2); font-size: 13px; }
+
+@media (max-width: 920px) {
+  .map-grid, .card-grid { grid-template-columns: 1fr; }
+  .map-card { position: static; }
+  .hero-body { grid-template-columns: 1fr; gap: 24px; padding-top: 22px; }
+  .hero-art { order: -1; }
+  .mosaic { grid-template-rows: 140px 140px; }
+  .qr-inline { display: none; }
+}
+@media (max-width: 560px) {
+  .cal-scale .minor { visibility: hidden; }
+  .hero { padding-top: 14px; }
+  .handle { font-size: 13px; }
+  .hero .meta { font-size: 12px; margin-bottom: 8px; }
+  .mosaic { grid-template-rows: 106px 106px; gap: 6px; }
+  .mosaic .ph { border-radius: 12px; }
+  .mosaic .ph .cap { padding: 18px 8px 6px; font-size: 11px; }
+  .mosaic .ph .cap b { font-size: 12.5px; }
+  .stat { padding: 0 14px; }
+  .stat b { font-size: 23px; }
+  .stat .tab { font-size: 12px; }
+  .cta .btn { padding: 13px 12px; }
+  .cta .btn-primary { flex: 1 1 100%; }
+  .cta .btn-ghost { flex: 1 1 0; }
+  .secnav { margin-top: 24px; }
+  .secnav a { font-size: 13px; padding: 7px 9px; }
+  .sec { padding-top: 44px; }
+  .panel { padding: 16px; min-height: 0; }
+  .map-card { padding: 10px; }
+  .cal { padding: 12px; }
+  .cal-row { grid-template-columns: 1fr; gap: 4px; }
+  .finder-ctl { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: 56px 1fr; }
+  .use { grid-template-columns: 1fr; text-align: left; }
+  .flist { grid-template-columns: 1fr; gap: 6px; }
+  .fchip { padding: 6px 10px 6px 8px; }
+  .fchip .thumb { width: 40px; height: 40px; }
+  .fchip .t span { font-size: 12px; }
+  .box { padding: 18px; }
+  .follow { gap: 12px; padding: 12px; }
+  .follow img { width: 48px; height: 48px; }
+  .follow .who b { font-size: 15.5px; }
+  .follow .who span { font-size: 13px; }
+  .follow .btn { padding: 9px 14px; font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <div class="hero-top">
+    <span class="eyebrow">9~12월 전북 축제 지도</span>
+    <a class="handle" href="https://www.instagram.com/jeonbukon.zip/" target="_blank" rel="noopener">@jeonbukon.zip</a>
+  </div>
+  <div class="hero-body">
+    <div class="hero-text">
+      <p class="meta" id="eyebrow"></p>
+      <h1>축제 가는 길,<br><em>전북사랑도민증</em>으로 할인받자</h1>
+      <p class="lead">9~12월 전북 축제장과 그 주변에서 도민증 하나로 할인받는 관광지·맛집·카페를 한 장의 지도에 모았어요. 축제를 고르면 가까운 할인가맹점이 거리순으로 나와요.</p>
+      <div class="stats" id="stats"></div>
+      <div class="cta">
+        <a class="btn btn-primary" id="issueBtn" target="_blank" rel="noopener">도민증 발급 신청하기 <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="#finder">가맹점 찾기</a>
+        <a class="btn btn-ghost" href="#howto">도민증이 뭐예요?</a>
+      </div>
+      <div class="qr-inline">
+        <div class="qr" id="heroQr"></div>
+        <div><b>휴대폰 카메라로 스캔</b><span>전북사랑도민증 발급 페이지가 열려요</span></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="mosaic" id="mosaic"></div>
+    </div>
+  </div>
+</header>
+
+<nav class="secnav" aria-label="바로가기">
+  <div class="wrap secnav-in">
+    <a href="#mapSec">축제 지도</a>
+    <a href="#calendar">캘린더</a>
+    <a href="#finder">가맹점 찾기</a>
+    <a href="#howto" class="go">도민증 받기</a>
+  </div>
+</nav>
+
+<main>
+  <section class="sec wrap" id="mapSec" aria-labelledby="mapTitle">
+    <div class="sec-head">
+      <div>
+        <h2 id="mapTitle">축제 고르고, 바로 옆 할인까지</h2>
+        <p>번호를 누르면 축제 정보와 주변 가맹점이, 시군을 누르면 그 지역 가맹점 전체가 나와요.</p>
+      </div>
+    </div>
+    <div class="map-grid">
+      <div class="card map-card">
+        <div class="toolbar">
+          <div class="seg" id="scopeSeg" role="group" aria-label="축제 표시 범위">
+            <button type="button" data-scope="upcoming" aria-pressed="true">지금·다가오는</button>
+            <button type="button" data-scope="m9" aria-pressed="false">9월</button>
+            <button type="button" data-scope="m10" aria-pressed="false">10월</button>
+            <button type="button" data-scope="m11" aria-pressed="false">11월</button>
+            <button type="button" data-scope="m12" aria-pressed="false">12월</button>
+          </div>
+          <label class="toggle"><input type="checkbox" id="dotToggle"> 가맹점 위치 점</label>
+        </div>
+        <div class="map-box">
+          <svg id="map" role="img" aria-label="전북 14개 시군 지도와 9~12월 축제 위치"></svg>
+        </div>
+        <div class="map-legend">
+          <span><i style="background:var(--fest)"></i>축제가 열리는 시군</span>
+          <span><i class="dot" style="background:var(--accent)"></i>축제장</span>
+          <span><i class="dot" style="background:var(--ink)"></i>선택한 축제</span>
+          <span><i class="dot" style="background:var(--ended)"></i>지난 축제</span>
+        </div>
+        <div class="flist" id="flist"></div>
+      </div>
+      <aside class="card panel" id="panel" aria-live="polite"></aside>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="calendar" aria-labelledby="calTitle">
+      <div class="sec-head">
+        <div>
+          <h2 id="calTitle">9~12월 축제 캘린더</h2>
+          <p>달을 고르면 그달에 열리는 축제가 날짜순으로 나와요. 막대를 누르면 지도에서 그 축제를 보여줘요.</p>
+        </div>
+      </div>
+      <div class="card cal" id="calCard">
+        <div class="cal-top">
+          <div class="seg" id="calTabs" role="group" aria-label="달 고르기">
+            <button type="button" data-m="9" aria-pressed="false">9월</button>
+            <button type="button" data-m="10" aria-pressed="false">10월</button>
+            <button type="button" data-m="11" aria-pressed="false">11월</button>
+            <button type="button" data-m="12" aria-pressed="false">12월</button>
+          </div>
+          <span class="muted" id="calCount" style="font-size:13px"></span>
+        </div>
+        <div class="cal-row" style="cursor:default;border-top:0;padding-top:0">
+          <div class="name muted" style="font-size:12px">축제</div>
+          <div class="cal-scale" id="calScale"></div>
+        </div>
+        <div class="cal-rows" id="calRows"></div>
+        <div class="cal-legend">
+          <span><i style="background:var(--accent)"></i>진행 중</span>
+          <span><i style="background:var(--accent-soft)"></i>다가오는 축제</span>
+          <span><i style="background:var(--soft);border:1px solid var(--line)"></i>지난 축제</span>
+        </div>
+      </div>
+  </section>
+
+  <section class="sec wrap" id="finder" aria-labelledby="finderTitle">
+    <div class="sec-head">
+      <div>
+        <h2 id="finderTitle">도민증 할인가맹점 <span class="accent" id="finderCount">503곳</span></h2>
+        <p id="finderSub"></p>
+      </div>
+    </div>
+    <div class="finder-ctl">
+      <input type="search" id="q" placeholder="가게 이름, 혜택, 주소로 검색 (예: 한복, 치즈, 10%)" aria-label="가맹점 검색">
+      <select id="sgSel" aria-label="시군 선택"></select>
+    </div>
+    <div class="chips" id="catChips" role="group" aria-label="분야"></div>
+    <div class="count" id="fcount"></div>
+    <div class="fgrid" id="fgrid"></div>
+    <button class="more" id="fmore" type="button" hidden>더 보기</button>
+  </section>
+
+  <section class="sec wrap" id="howto" aria-labelledby="howTitle">
+    <div class="sec-head">
+      <div>
+        <h2 id="howTitle">전북사랑도민증, 이렇게 받아요</h2>
+        <p>전북 밖에 사는 사람이라면 누구나 휴대폰으로 신청할 수 있어요. 축제에 함께 오는 가족·친구에게도 알려 주세요.</p>
+      </div>
+    </div>
+    <div class="card-grid">
+      <div class="card box">
+        <h3>모바일 도민증 발급 순서</h3>
+        <ol class="steps">
+          <li><div><b>전북사랑도민 누리집 접속</b><span>아래 QR을 찍거나 lovecard.jb.go.kr → ‘도민증 발급신청’</span></div></li>
+          <li><div><b>휴대폰 본인인증 · 약관 동의</b><span>신청 대상: 현재 전북 외 지역에 사는 누구나</span></div></li>
+          <li><div><b>발급신청서 작성</b><span>개인정보 선택 항목에 동의하면 투어패스·쿠폰 혜택도 받을 수 있어요</span></div></li>
+          <li><div><b>도민증 받기</b><span>온라인 도민증이 카카오톡으로 오고, 누리집 ‘마이페이지 → 도민증 보기 및 내려받기’에서도 볼 수 있어요</span></div></li>
+        </ol>
+        <div class="use">
+          <div class="qr" id="howQr"></div>
+          <div>
+            <b>가맹점에서는 이렇게!</b><br>
+            결제 <b>전에</b> 도민증을 보여 주세요. 본인 확인을 위해 가맹점이 <b>신분증</b>을 요청할 수 있으니 함께 챙기세요. 할인 내용은 가게마다 달라요.
+          </div>
+        </div>
+        <ul class="notes">
+          <li>카드형(실물) 도민증은 출향도민·지역 연고자가 대상이며 서류 심사를 거쳐 발급돼요.</li>
+          <li>문의: <span id="contact"></span></li>
+        </ul>
+      </div>
+      <div class="card box">
+        <h3>도민증으로 받는 혜택</h3>
+        <ul class="bene">
+          <li><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg></span><div><b id="beneCount">할인가맹점</b><span>결제 전에 도민증을 보여 주면 가게마다 정한 할인·서비스를 받아요. 분야를 누르면 아래 목록에서 바로 볼 수 있어요.</span><div class="bene-cats" id="beneCats"></div></div></li>
+          <li><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v3a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3a3 3 0 0 1 0-6V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg></span><div><b>전북투어패스 1일권 무료</b><span>도민증 가입 때 혜택 제공에 동의하면 투어패스 1일권을 받아 투어패스 가맹 관광지에서 쓸 수 있어요. 올해 1월 신청자부터 다시 지급 중이에요.</span></div></li>
+          <li><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7ZM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7Z"/></svg></span><div><b>농촌여행 ‘참참’ 5,000원 쿠폰</b><span>도민증과 농촌여행 플랫폼 ‘참참’에 함께 가입하면 5,000원 상당 모바일 쿠폰을 받아요. 가입 때 ‘혜택 제공 동의(전체 동의)’가 필요해요.</span></div></li>
+        </ul>
+        <ul class="notes">
+          <li>투어패스·쿠폰은 개인정보 선택 항목(혜택 제공)에 동의한 사람에게 지급되며, 예산이 소진되면 지급이 끝나요.</li>
+          <li>전북생생장터 농특산물 증정 이벤트는 예산 소진으로 9월에 끝났어요.</li>
+          <li>가맹점 혜택·영업시간은 바뀔 수 있어요. 방문 전에 한 번 더 확인해 주세요.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="follow-wrap wrap" aria-label="전북 ON 계정">
+    <div class="follow">
+      <img src="img/logo.png" alt="전북 ON 로고">
+      <div class="who"><b>전북사랑 서포터즈</b><span>@jeonbukon.zip</span></div>
+      <a class="btn btn-primary" href="https://www.instagram.com/jeonbukon.zip/" target="_blank" rel="noopener">팔로우</a>
+    </div>
+    <div class="follow-side">
+      <div class="yt">유튜브 쇼츠는 여기서<a href="https://www.youtube.com/@jeonbuklovesupporters" target="_blank" rel="noopener">@jeonbuklovesupporters</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <b id="footTeam"></b>
+      <span id="footDate"></span>
+    </div>
+    <ul id="sources"></ul>
+  </div>
+</footer>
+
+<script src="data/geo.js"></script>
+<script src="data/festivals.js"></script>
+<script src="data/merchants.js"></script>
+<script src="lib/qrcode.min.js"></script>
+<script src="lib/common.js"></script>
+<script>
+(function () {
+  const J = JBON, U = J.u, C = J.config, esc = U.esc;
+  const T = U.today();
+  const $ = (s) => document.querySelector(s);
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const st = { scope: 'upcoming', sel: null, dots: false };
+  const F = J.festivals.map((f) => ({ ...f, st: U.status(f, T) }));
+  const byId = Object.fromEntries(F.map((f) => [f.id, f]));
+  const M = J.merchants;
+  const countBy = (arr, k) => arr.reduce((o, x) => ((o[x[k]] = (o[x[k]] || 0) + 1), o), {});
+  const sgCount = countBy(M, 'sigun');
+
+  // ── 헤더 ──
+  $('#eyebrow').textContent = `${T.getMonth() + 1}월 ${T.getDate()}일 기준 · ${C.team} 제작`;
+  $('#finderCount').textContent = `${M.length}곳`;
+  $('#issueBtn').href = C.issueUrl;
+  $('#heroQr').innerHTML = U.qrSvg(C.issueUrl);
+  $('#howQr').innerHTML = U.qrSvg(C.issueUrl);
+  $('#contact').textContent = C.contact;
+  $('#beneCount').textContent = `할인가맹점 ${M.length.toLocaleString()}곳`;
+  const catN = M.reduce((o, m) => ((o[m.cat] = (o[m.cat] || 0) + 1), o), {});
+  $('#beneCats').innerHTML = Object.keys(U.CATS).filter((k) => catN[k])
+    .map((k) => `<button type="button" data-c="${k}" style="--tag:${U.CATS[k].tag}">${U.CATS[k].label}<small>${catN[k]}</small></button>`).join('');
+  $('#beneCats').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const chip = document.querySelector(`#catChips .chip[data-c="${b.dataset.c}"]`);
+    if (chip) chip.click();
+    $('#finder').scrollIntoView({ behavior: 'smooth' });
+  });
+  const upcoming = F.filter((f) => f.st.key !== 'ended');
+  $('#stats').innerHTML = [
+    [upcoming.length, '개', '지금·다가오는 축제'],
+    [M.length, '곳', '할인가맹점'],
+    [14, '개', '시군 어디서나'],
+  ].map(([n, unit, s]) => `<div class="stat"><span class="tab">${s}</span><b>${n}<small>${unit}</small></b></div>`).join('');
+  // 첫 화면 사진: 오늘 이후에도 이어지는 축제 중 현장 사진이 있는 3곳
+  const mosaicF = F.filter((f) => U.parseDate(f.end) > T && f.photo && !f.photo.ref)
+    .sort((a, b) => a.start.localeCompare(b.start) || U.days(b) - U.days(a)).slice(0, 3);
+  $('#mosaic').innerHTML = mosaicF.map((f) => U.photo(f, { cap: `<figcaption class="cap"><b>${esc(f.short)}</b><span>${U.range(f, false)} · ${esc(f.sigun)}</span></figcaption>` })).join('');
+  $('#mosaic').querySelectorAll('.ph').forEach((el, i) => el.addEventListener('click', () => {
+    select({ type: 'fest', id: mosaicF[i].id }, false);
+    $('#mapSec').scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  // ── 가맹점 카드 ──
+  // e = { m, label, members } · label: 거리 문구 (없으면 시군 표시) · members 3곳 이상이면 한 장으로 묶음
+  function mCard(e) {
+    const { m, label, members = [m] } = e;
+    const cat = U.CATS[m.cat] || U.CATS.shop;
+    const group = members.length >= 3;
+    const strip = (n) => n.replace(/\s*\([^)]*\)\s*$/, '');
+    let title = m.name, extra = '';
+    if (group) {
+      const par = members.map((x) => (x.name.match(/\(([^)]+)\)\s*$/) || [])[1]);
+      title = par[0] && par.every((p) => p === par[0]) ? `${par[0]} 매장 ${members.length}곳` : `${strip(m.name)} 외 ${members.length - 1}곳`;
+      extra = `<details><summary>매장 목록</summary><div class="note">${esc(members.map((x) => strip(x.name)).join(', '))}</div></details>`;
+    }
+    // 전화 링크가 안 열리는 환경도 있어서 번호를 그대로 보여 줌
+    const tel = !group && m.phone ? `<a href="tel:${m.phone.replace(/[^0-9]/g, '')}">☎ ${esc(m.phone)}</a>` : '';
+    const note = !group && m.note ? `<details><summary>안내</summary><div class="note">${esc(m.note)}</div></details>` : '';
+    const addr = group ? m.addr.replace(/\s*(\d+층|지하).*$/, '') + ' (같은 건물)' : m.addr;
+    return `<article class="m${m.closed ? ' closed' : ''}">
+      <div class="m-top"><span class="cat" style="--tag:${cat.tag}">${cat.label}${label == null ? ` · ${m.sigun}` : ''}</span>${label != null ? `<span class="dist">${esc(label)}</span>` : ''}</div>
+      <h4>${esc(title)}${m.closed ? '<span class="tag-closed">휴관·휴업</span>' : ''}</h4>
+      <p class="ben"><span>${esc(m.benefit.join(' · '))}</span></p>
+      ${addr ? `<p class="addr">${esc(addr)}</p>` : ''}
+      <div class="m-act"><a class="kakao" href="${esc(U.kakaoTo(m))}" target="_blank" rel="noopener">카카오맵 길찾기</a>${tel}${!group && m.web ? `<a href="${esc(m.web)}" target="_blank" rel="noopener">홈페이지</a>` : ''}${note}${extra}</div>
+    </article>`;
+  }
+
+  // 같은 건물 + 같은 혜택인 가게(예: 익산 주얼팰리스 입점 매장)는 3곳 이상이면 한 장으로 묶음
+  function entries(items, getM = (x) => x, getD = () => null) {
+    const byKey = new Map(), out = [];
+    for (const x of items) {
+      const m = getM(x);
+      const base = (m.addr || '').replace(/\s*(\d+층|지하|\().*$/, '').replace(/\s+/g, '');
+      const k = base ? `${base}§${m.benefit.join('|')}` : null;
+      if (k && byKey.has(k)) { byKey.get(k).members.push(m); continue; }
+      const e = { m, label: getD(x), members: [m] };
+      if (k) byKey.set(k, e);
+      out.push(e);
+    }
+    return out.flatMap((e) => (e.members.length >= 3 ? [e] : e.members.map((m, i) => (i === 0 ? { ...e, members: [m] } : { m, label: getD(items.find((x) => getM(x) === m)), members: [m] }))));
+  }
+
+  // 분야 칩 + 목록 + 더보기 (패널·검색 공용)
+  function listBlock(host, rawItems, { getM = (x) => x, getD = () => null, page = 6, empty = '해당하는 가맹점이 없어요.' } = {}) {
+    let cat = 'all', shown = page;
+    const items = entries(rawItems, getM, getD);
+    getM = (e) => e.m;
+    const counts = countBy(items.map(getM), 'cat');
+    const chips = document.createElement('div'); chips.className = 'chips';
+    const list = document.createElement('div'); list.className = 'mlist';
+    const more = document.createElement('button'); more.className = 'more'; more.type = 'button';
+    host.append(chips, list, more);
+    const cats = Object.keys(U.CATS).filter((k) => counts[k]);
+    chips.innerHTML = [`<button class="chip" data-c="all" aria-pressed="true">전체<small>${items.length}</small></button>`]
+      .concat(cats.map((k) => `<button class="chip" data-c="${k}" aria-pressed="false">${U.CATS[k].label}<small>${counts[k]}</small></button>`)).join('');
+    if (cats.length < 2) chips.hidden = true;
+    chips.onclick = (e) => {
+      const b = e.target.closest('.chip'); if (!b) return;
+      cat = b.dataset.c; shown = page;
+      chips.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', c === b));
+      draw();
+    };
+    more.onclick = () => { shown += page * 2; draw(); };
+    function draw() {
+      const f = items.filter((x) => cat === 'all' || getM(x).cat === cat);
+      list.innerHTML = f.length ? f.slice(0, shown).map(mCard).join('') : `<div class="empty">${empty}</div>`;
+      more.hidden = f.length <= shown;
+      more.textContent = `더 보기 (${f.length - shown}곳 남음)`;
+    }
+    draw();
+  }
+
+  // ── 지도 ──
+  const G = J.geo, svg = $('#map');
+  const VB = { x: -10, y: -10, w: G.W + 20, h: G.H + 20 };
+  svg.setAttribute('viewBox', `${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(svgNS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  const gBase = el('g', {}, svg), gDots = el('g', {}, svg), gSel = el('g', {}, svg), gMark = el('g', {}, svg), gLab = el('g', {}, svg);
+  for (const d of Object.values(G.neighbors)) el('path', { d, class: 'nb' }, gBase);
+  const sgEls = {};
+  for (const [name, s] of Object.entries(G.sigun)) {
+    const p = el('path', { d: s.d, class: 'sg', 'data-sg': name, tabindex: 0, role: 'button', 'aria-label': `${name} 가맹점 보기` }, gBase);
+    p.addEventListener('click', () => select({ type: 'sigun', id: name }));
+    p.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select({ type: 'sigun', id: name }); } });
+    sgEls[name] = p;
+  }
+  el('path', { d: G.outline, class: 'outline' }, gBase);
+  const LBL = U.LBL;
+  const sgText = [];
+  for (const [name, s] of Object.entries(G.sigun)) {
+    const [dx, dy] = LBL[name] || [0, 0];
+    const t = el('text', { x: s.c[0] + dx, y: s.c[1] + dy, class: 'sgl' }, gBase); t.textContent = name;
+    const c = el('text', { x: s.c[0] + dx, y: s.c[1] + dy + 12, class: 'sgc' }, gBase); c.textContent = `가맹점 ${sgCount[name] || 0}`;
+    sgText.push(t, c);
+  }
+  // 시군 이름 자리는 축제 이름표가 피해 가도록 상자로 기억
+  const sgBoxes = () => sgText.map((t) => { const b = t.getBBox(); return { x: b.x - 2, y: b.y - 1, w: b.width + 4, h: b.height + 2 }; });
+  // 가맹점 위치 점
+  for (const m of M) {
+    if (!U.hasPos(m)) continue;
+    const [x, y] = U.project(m.lat, m.lng);
+    el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: 1.5, class: 'md' }, gDots);
+  }
+  gDots.style.display = 'none';
+
+  let visible = [];
+  // 표시 범위: 'upcoming' = 안 끝난 축제, 'm10'~'m12' = 그달에 걸친 축제(지난 축제 포함)
+  const monthOf = (f) => U.parseDate(f.start).getMonth() + 1;
+  const inScope = (f) => st.scope === 'upcoming' ? f.st.key !== 'ended' : U.inMonth(f, 2026, +st.scope.slice(1));
+  const setScope = (scope) => {
+    st.scope = scope;
+    document.querySelectorAll('#scopeSeg button').forEach((x) => x.setAttribute('aria-pressed', x.dataset.scope === scope));
+  };
+  function drawMarkers() {
+    gMark.textContent = ''; gLab.textContent = ''; gSel.textContent = '';
+    visible = U.numbered(F.filter(inScope));
+    visible.forEach((f, i) => (f.num = i + 1));
+    // 시군 색칠
+    for (const [name, p] of Object.entries(sgEls)) {
+      const fs = visible.filter((f) => f.sigun === name);
+      p.classList.toggle('fest', fs.length > 0);
+      p.classList.toggle('sel', st.sel?.type === 'sigun' && st.sel.id === name);
+    }
+    const scale = svg.clientWidth / VB.w || 1;
+    const k = Math.min(2.2, Math.max(1, 0.85 / scale)); // 작은 화면에서는 표시를 키움
+    const showLabels = scale > 0.72;
+    // 겹치는 표시는 살짝 벌려 놓기
+    const pts = visible.map((f) => { const [x, y] = U.project(f.lat, f.lng); return { f, x, y }; });
+    for (let i = 0; i < pts.length; i++) for (let j = 0; j < i; j++) {
+      const a = pts[i], b = pts[j], dx = a.x - b.x, dy = a.y - b.y, d = Math.hypot(dx, dy), min = 20 * k;
+      if (d < min) { const ang = d ? Math.atan2(dy, dx) : -Math.PI / 4; a.x = b.x + Math.cos(ang) * min; a.y = b.y + Math.sin(ang) * min; }
+    }
+    const nMark = pts.length, sgB = showLabels ? sgBoxes() : [];
+    const boxes = pts.map((p) => ({ x: p.x - 12 * k, y: p.y - 12 * k, w: 24 * k, h: 24 * k })).concat(sgB);
+    // strict=false 이면 시군 이름은 가려도 됨 (선택한 축제 이름표가 자리를 못 찾을 때)
+    const hit = (b, strict = true) => boxes.some((o, i) => (strict || i < nMark || i >= nMark + sgB.length) && b.x < o.x + o.w && b.x + b.w > o.x && b.y < o.y + o.h && b.y + b.h > o.y) || b.x < VB.x || b.y < VB.y || b.x + b.w > VB.x + VB.w || b.y + b.h > VB.y + VB.h;
+    // 선택된 축제장 주변 반경
+    if (st.sel?.type === 'fest') {
+      const f = byId[st.sel.id], [x, y] = U.project(f.lat, f.lng);
+      el('circle', { cx: x, cy: y, r: ((f.nearKm || C.nearKm) / 111) * G.proj.K, class: 'venue-ring' }, gSel);
+    }
+    for (const p of pts) {
+      const f = p.f, r = 10 * k;
+      const g = el('g', { class: `fm${f.st.key === 'ended' ? ' ended' : ''}${st.sel?.type === 'fest' && st.sel.id === f.id ? ' sel' : ''}`, tabindex: 0, role: 'button', 'aria-label': `${f.num}번 ${f.name} ${U.range(f)} ${f.st.label}`, transform: `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})` }, gMark);
+      if (f.st.key === 'live') el('circle', { r, class: 'halo' }, g);
+      el('circle', { r, class: 'dot' }, g);
+      const t = el('text', { class: 'n', 'font-size': 11.5 * k }, g); t.textContent = f.num;
+      g.addEventListener('click', () => select({ type: 'fest', id: f.id }));
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select({ type: 'fest', id: f.id }); } });
+    }
+    // 이름표: 선택한 축제 → 날짜순으로, 실제 글자 폭을 재서 빈자리(오른쪽 → 왼쪽 → 위 → 아래)를 찾음
+    const prio = (p) => (st.sel?.type === 'fest' && st.sel.id === p.f.id ? 0 : 1);
+    for (const p of showLabels ? [...pts].sort((a, b) => prio(a) - prio(b) || a.f.num - b.f.num) : []) {
+      const f = p.f, r = 10 * k;
+      const lg = el('g', { class: `fl${prio(p) === 0 ? ' sel' : ''}${f.st.key === 'ended' ? ' ended' : ''}`, 'pointer-events': 'none' }, gLab);
+      const rect = el('rect', { rx: 9 }, lg);
+      const tx = el('text', { x: 8 }, lg);
+      tx.innerHTML = `${esc(f.short)} <tspan class="d">${esc(U.range(f, false))}</tspan>`;
+      const w = tx.getComputedTextLength() + 16, h = 18;
+      const cands = [[r + 3, -h / 2], [-r - 3 - w, -h / 2], [-w / 2, -r - 3 - h], [-w / 2, r + 3], [r, -h - 2], [r, 2], [-r - w, -h - 2], [-r - w, 2]];
+      const boxesFor = cands.map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy, w, h }));
+      const pos = boxesFor.find((b) => !hit(b)) || (prio(p) === 0 ? boxesFor.find((b) => !hit(b, false)) : null);
+      if (!pos) { lg.remove(); continue; }
+      boxes.push(pos);
+      lg.setAttribute('transform', `translate(${pos.x.toFixed(1)} ${pos.y.toFixed(1)})`);
+      rect.setAttribute('width', w.toFixed(1)); rect.setAttribute('height', h);
+      tx.setAttribute('y', h / 2);
+    }
+    drawFlist();
+  }
+
+  function drawFlist() {
+    $('#flist').innerHTML = visible.map((f) => `<button type="button" class="fchip${f.st.key === 'ended' ? ' ended' : ''}${st.sel?.type === 'fest' && st.sel.id === f.id ? ' sel' : ''}" data-id="${f.id}">
+      <span class="thumb"><span class="num">${f.num}</span>${U.photo(f, { cls: 'fill' })}</span><span class="t"><b>${esc(f.short)}</b><span>${U.range(f, false)} · ${f.st.label}${f.tentative ? ' · 예정' : ''}</span></span></button>`).join('');
+  }
+  $('#flist').onclick = (e) => { const b = e.target.closest('.fchip'); if (b) select({ type: 'fest', id: b.dataset.id }); };
+
+  document.querySelectorAll('#scopeSeg button').forEach((b) => b.addEventListener('click', () => {
+    setScope(b.dataset.scope);
+    if (st.sel?.type === 'fest' && !inScope(byId[st.sel.id])) st.sel = null, renderPanel();
+    drawMarkers();
+  }));
+  $('#dotToggle').addEventListener('change', (e) => { st.dots = e.target.checked; gDots.style.display = st.dots ? '' : 'none'; });
+  let rz; new ResizeObserver(() => { clearTimeout(rz); rz = setTimeout(drawMarkers, 80); }).observe(svg);
+
+  // ── 패널 ──
+  const panel = $('#panel');
+  function select(sel, scroll = true) {
+    st.sel = sel;
+    // 고른 축제가 지금 보기에서 안 보이면 그 축제가 시작하는 달로 바꿔 줌
+    if (sel?.type === 'fest' && !inScope(byId[sel.id])) setScope('m' + monthOf(byId[sel.id]));
+    drawMarkers(); renderPanel();
+    if (scroll && matchMedia('(max-width: 920px)').matches) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    try { history.replaceState(null, '', sel ? `#${sel.type}=${encodeURIComponent(sel.id)}` : location.pathname + location.search); } catch (e) { /* 공유 링크(샌드박스)에서는 주소를 바꿀 수 없음 */ }
+  }
+
+  function renderPanel() {
+    const sel = st.sel;
+    panel.textContent = '';
+    if (!sel) return renderHome();
+    if (sel.type === 'fest') return renderFest(byId[sel.id]);
+    return renderSigun(sel.id);
+  }
+
+  // 사진 카드 (처음 화면·시군 화면 공용)
+  const festCard = (f, extra = '') => `<button type="button" class="fest-card" data-id="${f.id}">
+      ${U.photo(f, { cls: f.st.key === 'ended' ? 'ended' : '' })}
+      <span class="body">
+        <span class="badges"><span class="badge ${f.st.key}">${f.st.label}</span><span class="badge">${esc(f.sigun)}</span></span>
+        <b>${esc(f.name)}</b>
+        <span class="s">${U.range(f)} · ${esc(f.venue.split(' (')[0])}</span>${extra}
+      </span>
+    </button>`;
+  const bindCards = () => panel.querySelectorAll('.fest-card').forEach((b) => b.addEventListener('click', () => select({ type: 'fest', id: b.dataset.id })));
+
+  function renderHome() {
+    // 진행 중인 축제 → 곧 열리는 축제 순으로 4곳 (오늘 끝나는 축제는 뒤로)
+    const next = U.numbered(F.filter((f) => U.parseDate(f.end) > T)).slice(0, 4);
+    panel.innerHTML = `<span class="eyebrow">곧 만나는 축제</span>
+      <h3>어디로 가 볼까요?</h3>
+      <p class="sub">축제를 고르면 축제장 안·주변(직선 약 ${C.nearKm}km)의 도민증 할인가맹점을 가까운 순서로 보여 드려요.</p>
+      <div class="fest-cards">${next.map((f) => festCard(f, `<span class="s">주변 할인가맹점 <b style="font-size:inherit;color:var(--accent-ink)">${U.nearby(f).length}곳</b></span>`)).join('')}</div>
+      <div class="hint" style="margin-top:14px"><span aria-hidden="true">💡</span><span>지도의 번호나 아래 목록에서 다른 축제도 고를 수 있어요. 시군을 누르면 그 지역 할인가맹점 전체가 나와요.</span></div>`;
+    bindCards();
+  }
+
+  function renderFest(f) {
+    const near = U.nearby(f);
+    const rest = M.filter((m) => m.sigun === f.sigun && !near.some((x) => x.m === m));
+    const inside = near.filter((x) => x.rank === 0 && !x.m.closed);
+    const perk = inside.length ? `<div class="perk"><b class="t">축제장 안에서 바로 쓰는 도민증 혜택 ${inside.length}곳</b><ul>${inside.slice(0, 4).map((x) => `<li><b>${esc(x.m.name.replace(/\s*\(.*?\)\s*/g, ' ').trim())}</b> <span>· ${esc(x.m.benefit[0] || '')}</span></li>`).join('')}</ul></div>` : '';
+    panel.innerHTML = `<button class="back" type="button">← 처음으로</button>
+      <div class="badges" style="margin-top:10px">
+        <span class="badge ${f.st.key}">${f.st.label}</span>
+        <span class="badge">${f.edition}</span>
+        ${f.tentative ? '<span class="badge tent">예정 일정</span>' : ''}
+      </div>
+      <h3>${esc(f.name)}</h3>
+      ${U.photo(f, { cls: 'hero-photo' + (f.st.key === 'ended' ? ' ended' : ''), cap: f.photo ? `<figcaption class="cap">${esc(f.photo.caption)}</figcaption>` : '' })}
+      ${f.photo ? `<p class="credit">${U.credit(f.photo)}</p>` : '<p class="credit">자유롭게 쓸 수 있는 현장 사진을 찾지 못해 그림으로 대신했어요.</p>'}
+      <dl class="facts">
+        <dt>기간</dt><dd>${U.range(f)} · ${U.days(f)}일간</dd>
+        <dt>장소</dt><dd>${esc(f.sigun)} ${esc(f.venue)}</dd>
+        ${f.hours ? `<dt>시간</dt><dd>${esc(f.hours)}</dd>` : ''}
+        ${f.fee ? `<dt>요금</dt><dd>${esc(f.fee)}</dd>` : ''}
+        ${f.contact ? `<dt>문의</dt><dd><a href="tel:${f.contact.replace(/[^0-9]/g, '')}">${esc(f.contact)}</a></dd>` : ''}
+      </dl>
+      ${f.tentative ? '<div class="hint" style="margin-bottom:12px"><span aria-hidden="true">📌</span><span>아직 기사나 공식 발표 전이라, 주최 측이 한국관광공사에 등록한 일정이에요. 날짜가 바뀔 수 있으니 가기 전에 꼭 확인해 주세요.</span></div>' : ''}
+      <div class="fest-actions"><a class="btn btn-kakao" href="${esc(U.kakaoFest(f))}" target="_blank" rel="noopener">카카오맵으로 축제장 길찾기</a></div>
+      <ul class="prog">${f.programs.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
+      <div class="src">일정 출처 · ${[f.src, f.src2].filter(Boolean).map((x) => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join(' · ')}<br>방문 전 공식 안내를 한 번 더 확인하세요</div>
+      ${f.st.key === 'ended' ? `<div class="hint" style="margin-top:12px"><span aria-hidden="true">📅</span><span>올해 축제는 끝났어요. 그래도 ${esc(f.sigun)}의 도민증 할인가맹점은 언제든 이용할 수 있어요.</span></div>` : ''}
+      ${perk}
+      <div class="near-head"><h4>축제장 주변 할인가맹점</h4><span>${near.length}곳 · 직선 ${f.nearKm || C.nearKm}km 안</span></div>
+      <div id="nearList"></div>
+      ${rest.length ? `<div class="near-head"><h4>${esc(f.sigun)}의 다른 가맹점</h4><span>${rest.length}곳</span></div><div id="restList"></div>` : ''}`;
+    panel.querySelector('.back').onclick = () => select(null, false);
+    listBlock(panel.querySelector('#nearList'), near, { getM: (x) => x.m, getD: (x) => x.label, page: 6, empty: `축제장 ${f.nearKm || C.nearKm}km 안에서 위치가 확인된 가맹점이 없어요. 아래 ${f.sigun} 목록을 확인해 주세요.` });
+    if (rest.length) listBlock(panel.querySelector('#restList'), rest, { page: 4 });
+  }
+
+  function renderSigun(name) {
+    const ms = M.filter((m) => m.sigun === name).sort((a, b) => a.closed - b.closed || a.name.localeCompare(b.name, 'ko'));
+    const fs = U.numbered(F.filter((f) => f.sigun === name));
+    panel.innerHTML = `<button class="back" type="button">← 처음으로</button>
+      <span class="eyebrow" style="display:block;margin-top:10px">시군별 보기</span>
+      <h3>${esc(name)}</h3>
+      <p class="sub">도민증 할인가맹점 <b>${ms.length}곳</b>${fs.length ? ` · 9~12월 축제 ${fs.length}개` : ''}</p>
+      ${fs.length ? `<div class="fest-cards" style="margin-bottom:6px">${fs.map((f) => festCard(f)).join('')}</div>` : ''}
+      <div class="near-head"><h4>할인가맹점</h4><span>가나다순</span></div>
+      <div id="sgList"></div>`;
+    panel.querySelector('.back').onclick = () => select(null, false);
+    bindCards();
+    listBlock(panel.querySelector('#sgList'), ms, { page: 8 });
+  }
+
+  // ── 캘린더: 달마다 그달에 걸친 축제를 막대로 ──
+  (function calendar() {
+    function render(month) {
+      const start = new Date(2026, month - 1, 1), N = new Date(2026, month, 0).getDate();
+      $('#calCard').style.setProperty('--n', N);
+      document.querySelectorAll('#calTabs button').forEach((x) => x.setAttribute('aria-pressed', +x.dataset.m === month));
+      const scale = [];
+      for (let i = 0; i < N; i++) {
+        const d = new Date(2026, month - 1, i + 1), dow = d.getDay();
+        const cls = +d === +T ? 'today' : dow === 6 ? 'sat' : dow === 0 ? 'sun' : '';
+        const lbl = i === 0 ? `${month}/1` : (d.getDate() % 5 === 0 || +d === +T ? d.getDate() : '');
+        // 휴대폰에선 1·10·20·30일과 오늘만 보이게
+        const minor = +d !== +T && i !== 0 && d.getDate() % 10 !== 0 ? ' minor' : '';
+        scale.push(`<span class="${cls}${minor}" title="${U.mdw(d)}">${lbl || (dow === 0 ? '·' : '')}</span>`);
+      }
+      $('#calScale').innerHTML = scale.join('');
+      const list = U.numbered(F.filter((f) => U.inMonth(f, 2026, month)));
+      $('#calCount').textContent = `${month}월 축제 ${list.length}개`;
+      $('#calRows').innerHTML = list.length ? list.map((f) => {
+        const s0 = U.diffDays(start, U.parseDate(f.start)), e0 = U.diffDays(start, U.parseDate(f.end));
+        const s1 = Math.max(0, s0), e1 = Math.min(N - 1, e0);
+        const cls = [f.st.key, s0 < 0 ? 'cl' : '', e0 > N - 1 ? 'cr' : ''].join(' ');
+        const txt = `${s0 < 0 ? '← ' : ''}${U.range(f, false)}${e0 > N - 1 ? ' →' : ''}`;
+        // 막대가 짧으면(4일 이하) 날짜를 막대 옆에 씀: 오른쪽에 자리가 없으면 왼쪽
+        const out = e1 - s1 < 4, after = e1 + 8 <= N;
+        const lbl = out ? `<span class="bar-lbl ${f.st.key}${after ? '' : ' before'}" style="grid-column:${after ? `${e1 + 2} / -1` : `1 / ${s1 + 1}`}">${txt}</span>` : '';
+        return `<div class="cal-row" data-id="${f.id}" role="button" tabindex="0" aria-label="${esc(f.name)} ${U.range(f)}">
+        <div class="name">${U.photo(f, { cls: f.st.key === 'ended' ? 'ended' : '' })}<div><b>${esc(f.name)}</b><span>${f.sigun} · ${f.st.label}${f.tentative ? ' · 예정 일정' : ''}</span></div></div>
+        <div class="track"><div class="bar ${cls}" style="grid-column:${s1 + 1} / ${e1 + 2}">${out ? '' : txt}</div>${lbl}</div>
+      </div>`;
+      }).join('') : '<div class="cal-empty">이달에 확인된 축제가 아직 없어요.</div>';
+    }
+    const now = T.getFullYear() === 2026 && T.getMonth() >= 8 ? T.getMonth() + 1 : 9;
+    render(now);
+    $('#calTabs').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) render(+b.dataset.m); });
+    const go = (id) => { select({ type: 'fest', id }, false); $('#mapSec').scrollIntoView({ behavior: 'smooth' }); };
+    $('#calRows').addEventListener('click', (e) => { const r = e.target.closest('.cal-row'); if (r) go(r.dataset.id); });
+    $('#calRows').addEventListener('keydown', (e) => { const r = e.target.closest('.cal-row'); if (r && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); go(r.dataset.id); } });
+  })();
+
+  // ── 가맹점 찾기 ──
+  (function finder() {
+    // 처음엔 PC 16곳(4줄), 휴대폰 8곳만 보여 주고 '더 보기'로 늘림
+    const PAGE = matchMedia('(max-width: 560px)').matches ? 8 : 16;
+    let shown = PAGE, cat = 'all';
+    const sel = $('#sgSel');
+    sel.innerHTML = `<option value="">전체 시군 (${M.length})</option>` + U.SIGUN.map((s) => `<option value="${s}">${s} (${sgCount[s] || 0})</option>`).join('');
+    const catCount = countBy(M, 'cat');
+    $('#catChips').innerHTML = [`<button class="chip" data-c="all" aria-pressed="true">전체</button>`]
+      .concat(Object.keys(U.CATS).filter((k) => catCount[k]).map((k) => `<button class="chip" data-c="${k}" aria-pressed="false">${U.CATS[k].label}<small>${catCount[k]}</small></button>`)).join('');
+    $('#finderSub').innerHTML = `전북사랑도민 누리집에 올라온 할인가맹점 <b>${M.length}곳</b>을 모두 담았어요 (${C.baseDate.replace(/-/g, '.')} 확인).`;
+    const norm = (s) => s.toLowerCase().replace(/\s+/g, '');
+    const idx = M.map((m) => norm([m.name, m.benefit.join(' '), m.addr || '', m.sigun, (U.CATS[m.cat] || {}).label].join(' ')));
+    function draw() {
+      const q = norm($('#q').value), sg = sel.value;
+      const res = M.map((m, i) => [m, i]).filter(([m, i]) => (!sg || m.sigun === sg) && (cat === 'all' || m.cat === cat) && (!q || idx[i].includes(q)))
+        .map(([m]) => m).sort((a, b) => a.closed - b.closed || U.SIGUN.indexOf(a.sigun) - U.SIGUN.indexOf(b.sigun) || a.name.localeCompare(b.name, 'ko'));
+      const es = entries(res);
+      $('#fcount').textContent = `${res.length}곳${es.length < res.length ? ` (같은 건물·같은 혜택 매장은 한 장으로 묶었어요)` : ''}`;
+      $('#fgrid').innerHTML = es.length ? es.slice(0, shown).map(mCard).join('') : '<div class="empty" style="grid-column:1/-1">검색 결과가 없어요. 다른 단어로 찾아보세요.</div>';
+      $('#fmore').hidden = es.length <= shown;
+      $('#fmore').textContent = `더 보기 (${es.length - shown}개 남음)`;
+    }
+    let t;
+    $('#q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { shown = PAGE; draw(); }, 120); });
+    sel.addEventListener('change', () => { shown = PAGE; draw(); });
+    $('#catChips').addEventListener('click', (e) => {
+      const b = e.target.closest('.chip'); if (!b) return;
+      cat = b.dataset.c; shown = PAGE;
+      $('#catChips').querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', c === b));
+      draw();
+    });
+    $('#fmore').addEventListener('click', () => { shown += PAGE; draw(); });
+    draw();
+  })();
+
+  // ── 푸터 ──
+  $('#footTeam').textContent = `${C.team} 제작`;
+  $('#footDate').textContent = `데이터 확인일 ${C.baseDate.replace(/-/g, '.')}`;
+  const srcs = [...new Map(F.flatMap((f) => [f.src, f.src2]).filter(Boolean).map((s) => [s.url, s])).values()];
+  $('#sources').innerHTML = [
+    `<li>할인가맹점·도민증 안내: <a href="${C.merchantUrl}" target="_blank" rel="noopener">전북사랑도민 누리집 할인가맹점 현황</a> · <a href="${C.benefitUrl}" target="_blank" rel="noopener">기본혜택 소개</a> · <a href="${C.guideUrl}" target="_blank" rel="noopener">신청절차 안내</a> · <a href="${C.faqUrl}" target="_blank" rel="noopener">자주하는 질문</a></li>`,
+    `<li><details><summary>축제 일정 출처 ${srcs.length}곳</summary>투어전북 축제 목록·한국관광공사 축제 정보·시군 누리집·언론 보도로 교차 확인했어요. ‘예정 일정’은 주최 측이 등록한 일정이에요. ${srcs.map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join(', ')}</details></li>`,
+    `<li><details><summary>사진 출처 ${F.filter((f) => f.photo).length}장 (위키미디어 공용)</summary>${F.filter((f) => f.photo).map((f) => `<a href="${esc(f.photo.page)}" target="_blank" rel="noopener">${esc(U.credit(f.photo, false))}</a>`).join(' / ')}. ‘참고 이미지’는 해당 축제 현장 사진이 아니에요.</details></li>`,
+    `<li>지도: 통계청 행정구역 경계(2013, southkorea-maps) · 축제장·가맹점 좌표 © OpenStreetMap 기여자. 거리는 직선거리 대략값이에요.</li>`,
+    `<li>이 지도는 서포터즈 홍보 활동으로 만든 비공식 안내물이에요. 축제·혜택 정보는 바뀔 수 있으니 공식 안내를 함께 확인해 주세요.</li>`,
+  ].join('');
+
+  // 주소의 #fest=imsil, #sigun=전주시 로 바로 열기 (QR 공유용)
+  const h = decodeURIComponent(location.hash.slice(1)).split('=');
+  if (h[0] === 'fest' && byId[h[1]]) select({ type: 'fest', id: h[1] }, false);
+  else if (h[0] === 'sigun' && G.sigun[h[1]]) select({ type: 'sigun', id: h[1] }, false);
+  else { drawMarkers(); renderPanel(); }
+  // 웹폰트가 늦게 오면 이름표 폭이 달라지므로 한 번 더 배치
+  if (document.fonts) document.fonts.ready.then(drawMarkers);
+})();
+</script>
+</body>
+</html>

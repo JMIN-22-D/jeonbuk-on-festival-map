@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>전북 ON 웹·앱 한눈에</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap">
+<style>
+/* 웹사이트(index.html)와 앱(app.html)을 나란히 띄워 보는 화면. 둘 다 실제 페이지라 눌러 볼 수 있음 */
+:root { --bg: #EDF2EE; --ink: #1E2925; --ink2: #55605B; --accent: #0E9F7E; --chrome: #FFFFFF; --chrome-line: #E3E6E2; }
+html, body { margin: 0; height: 100%; }
+body { background: radial-gradient(circle at 15% 20%, #D3F0E3, transparent 40%), radial-gradient(circle at 85% 85%, #FFE9DA, transparent 45%), var(--bg); color: var(--ink); font-family: 'Noto Sans KR', system-ui, sans-serif; overflow: hidden; }
+.fit { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.wrap { width: 1240px; padding: 26px 30px 30px; box-sizing: border-box; display: grid; gap: 18px; }
+.head { display: flex; align-items: baseline; gap: 14px; }
+.head h1 { margin: 0; font-family: 'Jua', sans-serif; font-weight: 400; font-size: 30px; }
+.head span { color: var(--ink2); font-size: 14px; }
+.row { display: flex; gap: 34px; align-items: flex-start; }
+.col { display: grid; gap: 10px; justify-items: start; }
+.label { font-family: 'Jua', sans-serif; font-size: 19px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.label i { font-style: normal; font-family: 'Noto Sans KR', sans-serif; font-size: 12px; font-weight: 700; color: #fff; background: var(--accent); padding: 1px 9px; border-radius: 999px; }
+/* 브라우저 창 */
+.browser { width: 760px; border-radius: 14px; overflow: hidden; background: var(--chrome); box-shadow: 0 24px 50px rgba(20, 35, 29, .18), 0 0 0 1px var(--chrome-line); }
+.bar { height: 38px; display: flex; align-items: center; gap: 12px; padding: 0 14px; border-bottom: 1px solid var(--chrome-line); background: #F6F7F5; }
+.dots { display: flex; gap: 7px; }
+.dots b { width: 12px; height: 12px; border-radius: 50%; display: block; }
+.url { flex: 1; height: 24px; border-radius: 8px; background: #fff; border: 1px solid var(--chrome-line); font-size: 12px; color: var(--ink2); display: flex; align-items: center; padding: 0 10px; }
+.screen { width: 760px; height: 520px; overflow: hidden; position: relative; }
+.screen iframe { width: 1280px; height: 876px; border: 0; transform: scale(.59375); transform-origin: 0 0; position: absolute; left: 0; top: 0; }
+/* 휴대폰: app.html 의 기기 틀 부분만 잘라서 보여 줌 */
+.phone { width: 380px; height: 742px; overflow: hidden; position: relative; }
+.phone iframe { width: 780px; height: 900px; border: 0; transform: scale(.82); transform-origin: 0 0; position: absolute; left: -130px; top: -7px; background: transparent; }
+</style>
+</head>
+<body>
+<div class="fit" id="fit">
+  <div class="wrap">
+    <div class="head"><h1>전북 ON 축제 지도 · 웹과 앱</h1><span>같은 자료(축제 41개 · 할인가맹점 503곳)로 만든 두 가지 화면이에요. 둘 다 눌러 볼 수 있어요.</span></div>
+    <div class="row">
+      <div class="col">
+        <div class="label">웹사이트 <i>PC · 휴대폰 브라우저</i></div>
+        <div class="browser">
+          <div class="bar"><span class="dots"><b style="background:#FF5F57"></b><b style="background:#FEBC2E"></b><b style="background:#28C840"></b></span><span class="url">전북 축제 도민증 지도</span></div>
+          <div class="screen"><iframe src="index.html" title="웹사이트 버전"></iframe></div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="label">앱 <i>휴대폰 앱 형식</i></div>
+        <div class="phone"><iframe src="app.html?embed" title="앱 버전" allowtransparency="true"></iframe></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// 창 크기에 맞춰 전체를 줄여서 한 화면에 다 보이게
+const fit = document.getElementById('fit');
+function resize() {
+  const w = 1240, h = fit.firstElementChild.offsetHeight;
+  const s = Math.min(1, innerWidth / w, innerHeight / h);
+  fit.style.transform = `scale(${s})`;
+  fit.style.left = `${Math.max(0, (innerWidth - w * s) / 2)}px`;
+}
+addEventListener('resize', resize); resize();
+</script>
+</body>
+</html>
