@@ -41,7 +41,7 @@ const clean = (h) => (h || '')
 const unbullet = (s) => s.replace(/[\u200b\ufeff]/g, '').replace(/^[○ㆍ·•\-\s]+/, '').replace(/^주\s*소\s*[:：]\s*/, '').trim();
 
 function parseList(html, sigun) {
-  const tb = html.slice(html.indexOf('<tbody>'), html.indexOf('</tbody>'));
+  const tb = html.slice(html.indexOf('<tbody>'), html.lastIndexOf('</tbody>'));
   const rows = tb.split(/<tr[^>]*>/).slice(1);
   const out = [];
   for (let i = 0; i < rows.length; i++) {
@@ -156,6 +156,12 @@ async function geocode(m) {
       console.log(label + ' ' + items.length + '곳');
       raw.push(...items.filter((m) => m.sigun !== label));
     }
+    // 시군 분류가 안 붙은 가맹점도 있어서 '전체' 목록과 맞춰 보고 빠진 곳을 채움
+    const key = (m) => m.name.replace(/[\s()·]/g, '') + '|' + (m.benefit[0] || '').replace(/\s/g, '');
+    const seen = new Set(raw.map(key));
+    const missing = parseList(await get(LIST('')), '전체').filter((m) => !seen.has(key(m)));
+    for (const m of missing) { const sg = sigunOf(m); if (sg) { m.sigun = sg; raw.push(m); } else console.log('시군을 못 찾음:', m.name); }
+    console.log(`전체 목록에서 더 찾은 곳 ${missing.length}곳: ${missing.map((m) => m.name).join(', ')}`);
     fs.writeFileSync(rawF, JSON.stringify(raw, null, 1));
   }
 
