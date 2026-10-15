@@ -211,8 +211,8 @@ body.shot-front #back, body.shot-back #front { display: none; }
 
   $('#eb').textContent = `${M1 === M2 ? M1 : `${M1}~${M2}`}월 전북 축제 & 도민증 할인 지도`;
   $('#tm').textContent = $('#tm2').textContent = C.team;
-  $('#cnt').textContent = `${M.length}곳`;
-  $('#cnt3').textContent = `할인가맹점 ${M.length}곳`;
+  $('#cnt').textContent = `${C.merchantTotal || M.length}곳`;
+  $('#cnt3').textContent = `할인가맹점 ${C.merchantTotal || M.length}곳`;
   $('#contact2').textContent = `도민증 문의: ${C.contact}`;
   $('#qrIssue').innerHTML = U.qrSvg(C.issueUrl, { margin: 1 }) + '도민증 발급';
   $('#qrs').innerHTML = `<div>${U.qrSvg(C.issueUrl, { margin: 1 })}도민증 발급</div>` + (C.mapUrl ? `<div>${U.qrSvg(C.mapUrl, { margin: 1 })}웹 지도 보기</div>` : '');

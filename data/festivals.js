@@ -19,7 +19,8 @@ window.JBON = window.JBON || {};
 
 JBON.config = {
   team: '전북사랑서포터즈 1기 전북 ON',
-  baseDate: '2026-10-07', // 데이터 확인일 (가맹점 목록·도민증 혜택)
+  baseDate: '2026-10-15', // 데이터 확인일 (가맹점 목록·도민증 혜택)
+  merchantTotal: 525, // 담당자가 알려 준 전체 가맹점 수 (누리집 목록엔 아직 일부만 올라옴). 비우면 목록 수를 씀
   // 전북사랑도민 누리집
   issueUrl: 'https://lovecard.jb.go.kr/index.9is?contentUid=52df5b208967f0e0018b03d3a4ce3778',
   guideUrl: 'https://lovecard.jb.go.kr/index.9is?contentUid=ff80808180d9ba9e01813c0056e00059',

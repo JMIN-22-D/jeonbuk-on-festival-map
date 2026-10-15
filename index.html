@@ -460,7 +460,7 @@ footer details[open] summary { margin-bottom: 4px; }
   <section class="sec wrap" id="finder" aria-labelledby="finderTitle">
     <div class="sec-head">
       <div>
-        <h2 id="finderTitle">도민증 할인가맹점 <span class="accent" id="finderCount">503곳</span></h2>
+        <h2 id="finderTitle">도민증 할인가맹점 <span class="accent" id="finderCount">525곳</span></h2>
         <p id="finderSub"></p>
       </div>
     </div>
@@ -555,17 +555,18 @@ footer details[open] summary { margin-bottom: 4px; }
   const F = J.festivals.map((f) => ({ ...f, st: U.status(f, T) }));
   const byId = Object.fromEntries(F.map((f) => [f.id, f]));
   const M = J.merchants;
+  const TOTAL = C.merchantTotal || M.length; // 안내 문구에 쓰는 전체 가맹점 수
   const countBy = (arr, k) => arr.reduce((o, x) => ((o[x[k]] = (o[x[k]] || 0) + 1), o), {});
   const sgCount = countBy(M, 'sigun');
 
   // ── 헤더 ──
   $('#eyebrow').textContent = `${T.getMonth() + 1}월 ${T.getDate()}일 기준 · ${C.team} 제작`;
-  $('#finderCount').textContent = `${M.length}곳`;
+  $('#finderCount').textContent = `${TOTAL}곳`;
   $('#issueBtn').href = C.issueUrl;
   $('#heroQr').innerHTML = U.qrSvg(C.issueUrl);
   $('#howQr').innerHTML = U.qrSvg(C.issueUrl);
   $('#contact').textContent = C.contact;
-  $('#beneCount').textContent = `할인가맹점 ${M.length.toLocaleString()}곳`;
+  $('#beneCount').textContent = `할인가맹점 ${TOTAL.toLocaleString()}곳`;
   const catN = M.reduce((o, m) => ((o[m.cat] = (o[m.cat] || 0) + 1), o), {});
   $('#beneCats').innerHTML = Object.keys(U.CATS).filter((k) => catN[k])
     .map((k) => `<button type="button" data-c="${k}" style="--tag:${U.CATS[k].tag}">${U.CATS[k].label}<small>${catN[k]}</small></button>`).join('');
@@ -578,7 +579,7 @@ footer details[open] summary { margin-bottom: 4px; }
   const upcoming = F.filter((f) => f.st.key !== 'ended');
   $('#stats').innerHTML = [
     [upcoming.length, '개', '지금·다가오는 축제'],
-    [M.length, '곳', '할인가맹점'],
+    [TOTAL, '곳', '할인가맹점'],
     [14, '개', '시군 어디서나'],
   ].map(([n, unit, s]) => `<div class="stat"><span class="tab">${s}</span><b>${n}<small>${unit}</small></b></div>`).join('');
   // 첫 화면 사진: 오늘 이후에도 이어지는 축제 중 현장 사진이 있는 3곳
@@ -920,7 +921,7 @@ footer details[open] summary { margin-bottom: 4px; }
     const catCount = countBy(M, 'cat');
     $('#catChips').innerHTML = [`<button class="chip" data-c="all" aria-pressed="true">전체</button>`]
       .concat(Object.keys(U.CATS).filter((k) => catCount[k]).map((k) => `<button class="chip" data-c="${k}" aria-pressed="false">${U.CATS[k].label}<small>${catCount[k]}</small></button>`)).join('');
-    $('#finderSub').innerHTML = `전북사랑도민 누리집에 올라온 할인가맹점 <b>${M.length}곳</b>을 모두 담았어요 (${C.baseDate.replace(/-/g, '.')} 확인).`;
+    $('#finderSub').innerHTML = `전북사랑도민 할인가맹점 <b>${TOTAL}곳</b> 중 누리집에 올라온 <b>${M.length}곳</b>을 모두 담았어요 (${C.baseDate.replace(/-/g, '.')} 확인).`;
     const norm = (s) => s.toLowerCase().replace(/\s+/g, '');
     const idx = M.map((m) => norm([m.name, m.benefit.join(' '), m.addr || '', m.sigun, (U.CATS[m.cat] || {}).label].join(' ')));
     function draw() {
