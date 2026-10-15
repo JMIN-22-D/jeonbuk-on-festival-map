@@ -12059,5 +12059,74 @@
   "web": null,
   "lat": null,
   "lng": null
+ },
+ {
+  "sigun": "진안군",
+  "cate": "휴양·숙박",
+  "name": "데미샘 자연휴양림",
+  "benefit": [
+   "이용료 20% 할인",
+   "(성수기 및 주말 제외)"
+  ],
+  "info": [
+   "ㆍ진안군 백운면 데미샘1길 172ㆍ063-290-6993"
+  ],
+  "extra": [
+   "ㆍ연중 무휴",
+   "ㆍ누리집 ☞ 바로가기"
+  ],
+  "linkTexts": [
+   "바로가기"
+  ],
+  "map": null,
+  "web": "https://www.foresttrip.go.kr/indvz/main.do?hmpgId=ID02030074",
+  "lat": null,
+  "lng": null
+ },
+ {
+  "sigun": "부안군",
+  "cate": "휴양·숙박",
+  "name": "모항 해나루 가족호텔",
+  "benefit": [
+   "이용료 10% 할인",
+   "(성수기, 연휴 등 제외)"
+  ],
+  "info": [
+   "ㆍ부안군 변산면 모항해변길 73ㆍ063-580-0700"
+  ],
+  "extra": [
+   "ㆍ연중 무휴",
+   "ㆍ누리집 ☞ 바로가기"
+  ],
+  "linkTexts": [
+   "바로가기"
+  ],
+  "map": null,
+  "web": "http://www.haenaruhotel.co.kr/",
+  "lat": null,
+  "lng": null
+ },
+ {
+  "sigun": "임실군",
+  "cate": "문화·체험",
+  "name": "전북 119 안전체험관",
+  "benefit": [
+   "이용료 50% 할인"
+  ],
+  "info": [
+   "ㆍ임실군 임실읍 호국로 1630ㆍ063-290-5676"
+  ],
+  "extra": [
+   "ㆍ체험시간 : 09:50~16:40",
+   "ㆍ휴관일 : 매년 1월 1일, 명절(설날, 추석) 연휴, 매주 월요일",
+   "ㆍ누리집 ☞ 바로가기"
+  ],
+  "linkTexts": [
+   "바로가기"
+  ],
+  "map": null,
+  "web": "https://www.sobang.kr/safe119/index.sobang",
+  "lat": null,
+  "lng": null
  }
 ]

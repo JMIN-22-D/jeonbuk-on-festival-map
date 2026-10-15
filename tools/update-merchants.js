@@ -18,6 +18,9 @@ const OFFLINE = process.argv.includes('--offline');
 const BASE = 'https://lovecard.jb.go.kr';
 const LIST = (code) => `${BASE}/planweb/board/list.9is?contentUid=52df5b2081b3286d0181cc3845540441&boardUid=52df5b2081b3286d0181cc3572610423&categoryUid3=${code}`;
 const CODES = { 4640000: '전주시', 4670000: '군산시', 4680000: '익산시', 4690000: '정읍시', 4700000: '남원시', 4710000: '김제시', 4720000: '완주군', 4730000: '진안군', 4740000: '무주군', 4750000: '장수군', 4760000: '임실군', 4770000: '순창군', 4780000: '고창군', 4790000: '부안군' };
+// '전북'(도 직영 시설)·'기타' 분류는 시군이 따로 없어서 주소에 적힌 시군으로 나눔
+const EXTRA = { 6450000: '전북', 4800000: '기타' };
+const sigunOf = (m) => { const t = [...m.info, ...m.extra].join(' '); return Object.values(CODES).find((sg) => t.includes(sg) || t.includes(sg.slice(0, 2) + (sg.endsWith('시') ? '시' : '군'))) || Object.values(CODES).find((sg) => t.includes(sg.slice(0, 2))); };
 const CAT = { '음식점': 'food', '카페': 'cafe', '문화·체험': 'culture', '휴양·숙박': 'stay', '스포츠·레저': 'leisure', '기타': 'shop', '의료': 'medical', '휴게소': 'rest' };
 
 // lovecard 누리집은 중간 인증서를 보내지 않아 기본 검증에 실패함 → 이 호스트에만 검증 완화
@@ -147,6 +150,12 @@ async function geocode(m) {
       console.log(`${sg} ${items.length}곳`);
       raw.push(...items);
     }
+    for (const [code, label] of Object.entries(EXTRA)) {
+      const items = parseList(await get(LIST(code)), label);
+      for (const m of items) { const sg = sigunOf(m); if (sg) m.sigun = sg; else console.log('시군을 못 찾음:', m.name); }
+      console.log(label + ' ' + items.length + '곳');
+      raw.push(...items.filter((m) => m.sigun !== label));
+    }
     fs.writeFileSync(rawF, JSON.stringify(raw, null, 1));
   }
 
@@ -172,7 +181,7 @@ async function geocode(m) {
     const digits = (s) => s.replace(/[^0-9]/g, '');
     const noAddrPrefix = (s) => s.replace(/^(전북특별자치도|전라북도|전북)\s*/, '');
     const drop = (x) => !x || x === m.name || (m.linkTexts || []).includes(x) || /네이버\s*지도|^자세한\s*정보/.test(x)
-      || (m.web && /^(홈페이지|자세한\s*정보)\s*(참고|참조|확인)?$/.test(x))
+      || (m.web && /^(홈페이지|누리집|자세한\s*정보)\s*(☞\s*바로가기|참고|참조|확인)?$/.test(x))
       || (m.addr && (m.addr === noAddrPrefix(x) || m.addr.includes(noAddrPrefix(x)) || noAddrPrefix(x).includes(m.addr)))
       || (m.phone && digits(x) === digits(m.phone));
     const note = [...m.info, ...m.extra].map(unbullet)
